@@ -16,7 +16,7 @@ export default function AIFinderWidget() {
             <span className="ai-chip">KORA AI</span>
             <h2 className="ai-heading">Not sure what you need?</h2>
             <p className="ai-sub">Tell our AI what you're after — occasion, budget, comfort level — and get matched to the right pair in seconds.</p>
-            <a className="btn-orange" href="#">Find my shoe →</a>
+            <a className="btn-orange" href="#/finder">Find my shoe →</a>
           </div>
           <div className="ai-matches">
             {MATCHES.map(({ pct, p }) => (

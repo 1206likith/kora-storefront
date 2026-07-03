@@ -117,13 +117,14 @@ async function main() {
       .map((c) => nameById.get(cid(c)))
       .filter(Boolean);
     const brand = catNames.map((n) => cfg.brandKeyByCategoryName[n]).find(Boolean) || 'kora';
+    const gender = catNames.map((n) => cfg.genderByCategoryName?.[n]).find(Boolean) || '';
     const cat = titleCase(catNames.find((n) => typeSet.has(n)) || 'Footwear');
     const ribbon = p.ribbon?.name || p.ribbon || '';
     let badge = cfg.ribbonToBadge[ribbon] || '';
     if (!badge && catNames.includes('BEST SELLER')) badge = 'BESTSELLER';
     if (!badge && catNames.includes('NEW ARRIVALS')) badge = 'NEW';
     const price = priceOf(p);
-    return { i: p.id, b: brand, n: p.name, c: cat, p: price, m: mrpOf(p, price), g: badge, im: pickMainImage(p) };
+    return { i: p.id, b: brand, n: p.name, c: cat, p: price, m: mrpOf(p, price), g: badge, im: pickMainImage(p), x: gender };
   }).filter((r) => r.n && r.im);
 
   if (rows.length < MIN_OK) bail(`only ${rows.length} usable rows after mapping`);

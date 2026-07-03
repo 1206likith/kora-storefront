@@ -11,7 +11,7 @@ export default function DualEditorial() {
             <p className="dual-ed__sub">
               Heels, flats and wedges shaped for all-day wear — without giving up the look.
             </p>
-            <a href="#" className="dual-ed__cta">
+            <a href="#/collection/women" className="dual-ed__cta">
               Shop now →
             </a>
           </div>
@@ -21,7 +21,7 @@ export default function DualEditorial() {
             <p className="dual-ed__sub">
               Sneakers, formals and boots built to move with you, wherever the day takes you.
             </p>
-            <a href="#" className="dual-ed__cta">
+            <a href="#/collection/men" className="dual-ed__cta">
               Shop now →
             </a>
           </div>

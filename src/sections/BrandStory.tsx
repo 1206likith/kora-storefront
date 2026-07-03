@@ -27,7 +27,7 @@ export default function BrandStory() {
               </span>
             ))}
           </div>
-          <a href="#" className="link-arrow">
+          <a href="#/story" className="link-arrow">
             Our story →
           </a>
         </div>

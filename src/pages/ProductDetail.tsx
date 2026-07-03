@@ -144,6 +144,7 @@ export default function ProductDetail({ id = 'esc-derby' }: Props) {
                   type="button"
                   className="pdp-add"
                   style={{ background: accent, color: onAccent }}
+                  onClick={() => go('/checkout')}
                 >
                   Add to bag
                 </button>
@@ -241,7 +242,7 @@ export default function ProductDetail({ id = 'esc-derby' }: Props) {
           </div>
           <div className="rail">
             {completeLook.map((prod) => (
-              <ProductCard key={prod.id} p={prod} width={240} onOpen={(x) => go('/product/' + x.id)} />
+              <ProductCard key={prod.id} p={prod} width={240} onOpen={(x) => go('/product/' + x.id)} onAdd={(x) => go('/product/' + x.id)} />
             ))}
           </div>
         </div>
@@ -254,7 +255,7 @@ export default function ProductDetail({ id = 'esc-derby' }: Props) {
           </div>
           <div className="rail">
             {recentlyViewed.map((prod) => (
-              <ProductCard key={prod.id} p={prod} width={240} onOpen={(x) => go('/product/' + x.id)} />
+              <ProductCard key={prod.id} p={prod} width={240} onOpen={(x) => go('/product/' + x.id)} onAdd={(x) => go('/product/' + x.id)} />
             ))}
           </div>
         </div>

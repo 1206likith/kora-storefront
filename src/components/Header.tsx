@@ -2,6 +2,8 @@
    logo lockup, primary nav with mega-menus, search + wishlist + bag. */
 import { useState } from 'react';
 import { BRANDS } from '../data/brands';
+import { slugify } from '../data/catalog';
+import { go } from '../router';
 import '../styles/chrome.css';
 
 const ANNOUNCE = [
@@ -34,6 +36,27 @@ const MENU: Record<string, { title: string; items: string[] }[]> = {
 
 const NAV = ['Men', 'Women', 'Kids', 'Brands', 'Collection', 'Sale', 'Shoe Finder'];
 
+/* Top-level nav targets (hash paths). */
+const NAV_TARGET: Record<string, string> = {
+  Men: '/collection/men',
+  Women: '/collection/women',
+  Kids: '/collection/kids',
+  Brands: '/collection/all',
+  Collection: '/collection/all',
+  Sale: '/collection/sale',
+  'Shoe Finder': '/finder',
+};
+
+/* Mega-menu sub-item → collection slug. Featured items map to semantic slugs;
+   everything else slugifies to a type/gender slug (collectionFor falls back to all). */
+const megaSlug = (item: string): string => {
+  const l = item.toLowerCase();
+  if (l === 'new arrivals') return 'new';
+  if (l === 'bestsellers') return 'bestsellers';
+  if (l.startsWith('under ')) return 'under-1000';
+  return slugify(item);
+};
+
 export default function Header({ cart = 0 }: { cart?: number }) {
   const [mega, setMega] = useState<string | null>(null);
   const accentFor = (k: string) => (k === 'Women' ? '#a85c43' : k === 'Kids' ? '#e8730a' : '#14245c');
@@ -48,7 +71,7 @@ export default function Header({ cart = 0 }: { cart?: number }) {
         <div className="hdr__util-2">
           <span>Join <b>KORA Club</b> and get 10% off your first order</span>
           <span className="hdr__util-links">
-            <a href="#">Track Order</a><i>·</i><a href="#">Help</a><i>·</i><a href="#">Find A Store</a><i>·</i><a href="#">Join KORA Club</a><i>◦</i><a href="#">Log In</a>
+            <a href="#/checkout">Track Order</a><i>·</i><a href="#/story">Help</a><i>·</i><a href="#/">Find A Store</a><i>·</i><a href="#/story">Join KORA Club</a><i>◦</i><a href="#/">Log In</a>
           </span>
         </div>
       </div>
@@ -64,7 +87,7 @@ export default function Header({ cart = 0 }: { cart?: number }) {
 
       {/* Main bar */}
       <div className="hdr__main">
-        <a className="hdr__logo" href="#">
+        <a className="hdr__logo" href="#/">
           <span className="hdr__logo-kora">KORA</span>
           <span className="hdr__logo-cap">by Ajantha Shoe Co.</span>
         </a>
@@ -74,16 +97,21 @@ export default function Header({ cart = 0 }: { cart?: number }) {
               key={n}
               className={'hdr__navitem' + (n === 'Sale' ? ' hdr__navitem--sale' : '')}
               onMouseEnter={() => setMega(MENU[n] || n === 'Brands' ? n : null)}
-              onClick={() => setMega(mega === n ? null : n)}
+              onClick={() => { setMega(null); go(NAV_TARGET[n]); }}
             >
               {n}{(MENU[n] || n === 'Brands') && <i className="hdr__caret">▾</i>}
             </button>
           ))}
         </nav>
         <div className="hdr__actions">
-          <div className="hdr__search"><span>⌕</span><input placeholder="Search KORA" /></div>
-          <button className="hdr__icon" aria-label="Wishlist">♥</button>
-          <button className="hdr__icon hdr__bag" aria-label="Bag">🛍<span className="hdr__badge">{cart}</span></button>
+          <form
+            className="hdr__search"
+            onSubmit={(e) => { e.preventDefault(); go('/collection/all'); }}
+          >
+            <span>⌕</span><input placeholder="Search KORA" />
+          </form>
+          <a className="hdr__icon" aria-label="Wishlist" href="#/">♥</a>
+          <a className="hdr__icon hdr__bag" aria-label="Bag" href="#/checkout">🛍<span className="hdr__badge">{cart}</span></a>
         </div>
       </div>
 
@@ -94,14 +122,14 @@ export default function Header({ cart = 0 }: { cart?: number }) {
             {MENU[mega].map((col) => (
               <div key={col.title} className="mega__col">
                 <div className="mega__coltitle" style={{ color: accentFor(mega) }}>{col.title}</div>
-                {col.items.map((it) => <a key={it} className="mega__item" href="#">{it}</a>)}
+                {col.items.map((it) => <a key={it} className="mega__item" href={`#/collection/${megaSlug(it)}`}>{it}</a>)}
               </div>
             ))}
             <div className="mega__feature">
               <div className="mega__feature-tile" />
               <div className="mega__feature-ey">{mega} feature</div>
               <div className="mega__feature-h">New in {mega}</div>
-              <a className="link-arrow" href="#">Shop now →</a>
+              <a className="link-arrow" href={`#/collection/${mega.toLowerCase()}`}>Shop now →</a>
             </div>
           </div>
         </div>
@@ -110,7 +138,7 @@ export default function Header({ cart = 0 }: { cart?: number }) {
         <div className="mega" style={{ borderTopColor: '#14245c' }}>
           <div className="mega__brands kora-wrap">
             {BRANDS.map((b) => (
-              <a key={b.key} className="mega__brandchip" href="#">
+              <a key={b.key} className="mega__brandchip" href={`#/brand/${b.key}`}>
                 <span className="mega__swatch" style={{ background: b.primary }} />
                 <span>
                   <b>{b.name}</b>

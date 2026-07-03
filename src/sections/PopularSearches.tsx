@@ -1,19 +1,19 @@
 import './PopularSearches.css';
 import { BRANDS } from '../data/brands';
 
-const SEARCHES = [
-  "Men's Sneakers",
-  "Women's Heels",
-  'Formal Oxfords',
-  'Running Shoes',
-  "Kids' Velcro",
-  'Loafers',
-  'Sandals & Sliders',
-  'Chelsea Boots',
-  'Walking Shoes',
-  'Office Formals',
-  'Wedding Mojaris',
-  'Under ₹1000',
+const SEARCHES: { label: string; slug: string }[] = [
+  { label: "Men's Sneakers", slug: 'men' },
+  { label: "Women's Heels", slug: 'women' },
+  { label: 'Formal Oxfords', slug: 'formal-shoes' },
+  { label: 'Running Shoes', slug: 'sneakers' },
+  { label: "Kids' Velcro", slug: 'kids' },
+  { label: 'Loafers', slug: 'loafers' },
+  { label: 'Sandals & Sliders', slug: 'sandals' },
+  { label: 'Chelsea Boots', slug: 'all' },
+  { label: 'Walking Shoes', slug: 'sneakers' },
+  { label: 'Office Formals', slug: 'formal-shoes' },
+  { label: 'Wedding Mojaris', slug: 'all' },
+  { label: 'Under ₹1000', slug: 'under-1000' },
 ];
 
 export default function PopularSearches() {
@@ -25,8 +25,8 @@ export default function PopularSearches() {
         </div>
         <div className="pop-search__chips">
           {SEARCHES.map((s) => (
-            <a href="#" className="pop-search__chip" key={s}>
-              {s}
+            <a href={`#/collection/${s.slug}`} className="pop-search__chip" key={s.label}>
+              {s.label}
             </a>
           ))}
         </div>
@@ -34,10 +34,10 @@ export default function PopularSearches() {
         <p className="pop-search__brands-label">Our brands</p>
         <div className="rail">
           {BRANDS.map((b) => (
-            <div className="brand-chip" key={b.key}>
+            <a className="brand-chip" key={b.key} href={`#/brand/${b.key}`}>
               <span className="brand-chip__swatch" style={{ background: b.primary }} />
               <span className="brand-chip__name">{b.name}</span>
-            </div>
+            </a>
           ))}
         </div>
       </div>

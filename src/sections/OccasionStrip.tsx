@@ -1,4 +1,5 @@
 import './OccasionStrip.css';
+import { slugify } from '../data/catalog';
 
 const OCCASIONS = ['Work', 'Party', 'Sports', 'Casual', 'Wedding', 'Home Wear', 'Outdoors'];
 
@@ -9,9 +10,9 @@ export default function OccasionStrip() {
         <div className="eyebrow">What are you shopping for?</div>
         <div className="occasion-rail">
           {OCCASIONS.map((o) => (
-            <button key={o} className="occasion-pill" type="button">
+            <a key={o} className="occasion-pill" href={`#/collection/${slugify(o)}`}>
               {o}
-            </button>
+            </a>
           ))}
         </div>
       </div>

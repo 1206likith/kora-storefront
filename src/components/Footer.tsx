@@ -37,7 +37,7 @@ export default function Footer() {
       <footer className="ft">
         <div className="ft__grid kora-wrap">
           <div className="ft__brand">
-            <div className="ft__logo">KORA</div>
+            <a className="ft__logo" href="#/">KORA</a>
             <p className="ft__tag">Born in South India.</p>
             <div className="ft__social">
               <a href="https://instagram.com/kora_shoe_makers" aria-label="Instagram">Instagram</a>
@@ -49,30 +49,30 @@ export default function Footer() {
           </div>
           <div className="ft__col">
             <h4>Shop</h4>
-            <a href="#">Men's shoes</a><a href="#">Women's shoes</a><a href="#">Kids' shoes</a>
-            <a href="#">New arrivals</a><a href="#">Sale</a><a href="#">By occasion</a>
+            <a href="#/collection/men">Men's shoes</a><a href="#/collection/women">Women's shoes</a><a href="#/collection/kids">Kids' shoes</a>
+            <a href="#/collection/new">New arrivals</a><a href="#/collection/sale">Sale</a><a href="#/collection/all">By occasion</a>
           </div>
           <div className="ft__col">
             <h4>Help</h4>
-            <a href="#">Track order</a><a href="#">Returns &amp; exchange</a><a href="#">Size guide</a>
-            <a href="#">Store locator</a><a href="#">Contact us</a><a href="#">WhatsApp support</a>
+            <a href="#/checkout">Track order</a><a href="#/story">Returns &amp; exchange</a><a href="#/story">Size guide</a>
+            <a href="#/">Store locator</a><a href="#/story">Contact us</a><a href="https://wa.me/919981234108" target="_blank" rel="noreferrer">WhatsApp support</a>
           </div>
           <div className="ft__col">
             <h4>Company</h4>
-            <a href="#">About KORA</a><a href="#">Our story</a><a href="#">Careers</a>
-            <a href="#">KORA Club loyalty</a><a href="#">Bulk enquiry</a>
+            <a href="#/story">About KORA</a><a href="#/story">Our story</a><a href="#/story">Careers</a>
+            <a href="#/story">KORA Club loyalty</a><a href="#/story">Bulk enquiry</a>
           </div>
           <div className="ft__col">
             <h4>More info</h4>
-            <a href="#">Secure shopping</a><a href="#">Shipping &amp; returns</a><a href="#">Terms &amp; conditions</a>
-            <a href="#">Privacy policy</a><a href="#">Sitemap</a>
+            <a href="#/story">Secure shopping</a><a href="#/story">Shipping &amp; returns</a><a href="#/story">Terms &amp; conditions</a>
+            <a href="#/story">Privacy policy</a><a href="#/">Sitemap</a>
           </div>
         </div>
         <div className="ft__fam kora-wrap">
           <div>
             <span className="ft__fam-lbl">KORA family of brands</span>
             <div className="ft__fam-chips">
-              {BRANDS.filter((b) => b.key !== 'kora').map((b) => <span key={b.key}>{b.name}</span>)}
+              {BRANDS.filter((b) => b.key !== 'kora').map((b) => <a key={b.key} href={`#/brand/${b.key}`}>{b.name}</a>)}
             </div>
           </div>
           <div>

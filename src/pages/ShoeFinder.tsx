@@ -87,7 +87,15 @@ export default function ShoeFinder() {
             <h1 className="finder-q">Match complete</h1>
             <div className="finder-results">
               {RESULTS.map(({ pct, product }) => (
-                <div className="finder-result" key={product.id}>
+                <div
+                  className="finder-result"
+                  key={product.id}
+                  role="link"
+                  tabIndex={0}
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => go('/product/' + product.id)}
+                  onKeyDown={(e) => { if (e.key === 'Enter') go('/product/' + product.id); }}
+                >
                   <PlaceholderTile
                     label={product.cat}
                     ratio="1 / 1"

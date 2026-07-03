@@ -9,7 +9,15 @@ import { DEMO_PRODUCTS } from '../data/catalog';
 import { brandByKey, onColor } from '../data/brands';
 import { go } from '../router';
 
-const SUBNAV = ['All', 'Formal', 'Casual', 'Sneakers', 'Loafers', 'New arrivals', 'Best sellers'];
+const SUBNAV: { label: string; slug: string }[] = [
+  { label: 'All', slug: 'all' },
+  { label: 'Formal', slug: 'formal-shoes' },
+  { label: 'Casual', slug: 'casual-shoes' },
+  { label: 'Sneakers', slug: 'sneakers' },
+  { label: 'Loafers', slug: 'loafers' },
+  { label: 'New arrivals', slug: 'new' },
+  { label: 'Best sellers', slug: 'bestsellers' },
+];
 
 const MATERIALS = [
   { title: 'Full-grain leather', copy: 'Sourced and tanned for strength that only gets better with wear.' },
@@ -63,8 +71,12 @@ export default function BrandWorld({ brandKey }: { brandKey?: string }) {
       <nav className="bw-subnav">
         <div className="kora-wrap bw-subnav__rail">
           {SUBNAV.map((s, i) => (
-            <button key={s} className={'bw-pill' + (i === 0 ? ' bw-pill--active' : '')}>
-              {s}
+            <button
+              key={s.label}
+              className={'bw-pill' + (i === 0 ? ' bw-pill--active' : '')}
+              onClick={() => go('/collection/' + (s.slug === 'all' ? brand.key : s.slug))}
+            >
+              {s.label}
             </button>
           ))}
         </div>
@@ -93,7 +105,12 @@ export default function BrandWorld({ brandKey }: { brandKey?: string }) {
           </div>
           <div className="pgrid">
             {products.map((p) => (
-              <ProductCard key={p.id} p={p} />
+              <ProductCard
+                key={p.id}
+                p={p}
+                onOpen={(prod) => go('/product/' + prod.id)}
+                onAdd={(prod) => go('/product/' + prod.id)}
+              />
             ))}
           </div>
         </div>

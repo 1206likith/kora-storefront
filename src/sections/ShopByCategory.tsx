@@ -1,5 +1,6 @@
 import './ShopByCategory.css';
 import PlaceholderTile from '../components/PlaceholderTile';
+import { slugify } from '../data/catalog';
 
 const CATEGORIES = ['Sneakers', 'Formal', 'Loafers', 'Heels', 'Boots', 'Sandals', 'Sliders', 'Kids'];
 
@@ -13,12 +14,12 @@ export default function ShopByCategory() {
         </div>
         <div className="shop-cat__grid">
           {CATEGORIES.map((cat) => (
-            <div className="shop-cat__tile" key={cat}>
+            <a className="shop-cat__tile" key={cat} href={`#/collection/${slugify(cat)}`}>
               <div className="shop-cat__thumb">
                 <PlaceholderTile ratio="1 / 1" label={cat} style={{ border: '2px solid transparent' }} />
               </div>
               <span className="shop-cat__label">{cat}</span>
-            </div>
+            </a>
           ))}
         </div>
       </div>

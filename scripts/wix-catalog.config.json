@@ -18,6 +18,7 @@
     "FLATS", "BALLET FLATS", "BELT SANDALS", "CASUAL SANDALS", "FLIP FLOPS",
     "HOME WEAR", "SLIDERS", "SLIPPERS", "WEDGES"
   ],
+  "genderByCategoryName": { "MEN": "men", "WOMEN": "women", "KIDS": "kids" },
   "badgeCategoryNames": { "BEST SELLER": "BESTSELLER", "NEW ARRIVALS": "NEW" },
   "ribbonToBadge": { "New Arrival": "NEW", "Best Seller": "BESTSELLER", "Bestseller": "BESTSELLER" }
 }

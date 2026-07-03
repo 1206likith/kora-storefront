@@ -32,7 +32,7 @@ export default function Hero() {
               <span className="hero__pct">50%</span>
               <span className="hero__off">OFF*</span>
               <span className="hero__on">ON BESTSELLERS</span>
-              <a className="btn-navy hero__cta" href="#">SHOP NOW →</a>
+              <a className="btn-navy hero__cta" href="#/collection/sale">SHOP NOW →</a>
             </div>
           </div>
           <span className="hero__tc">*T&amp;Cs apply</span>
@@ -46,7 +46,7 @@ export default function Hero() {
             <span className="hero__eyebrow">NEW SEASON</span>
             <h1>Spring / Summer ’26</h1>
             <p>Fresh silhouettes across all eight KORA brands — made in South India, built to last.</p>
-            <a className="btn-orange" href="#">Shop new arrivals →</a>
+            <a className="btn-orange" href="#/collection/new">Shop new arrivals →</a>
           </div>
         </div>
       )}
@@ -58,7 +58,7 @@ export default function Hero() {
             <span className="hero__eyebrow">COMFORT TECH</span>
             <h1>KORA CloudWalk™</h1>
             <p>Air-cooled memory foam engineered to be worn all day.</p>
-            <a className="btn-navy" href="#" style={{ background: '#fff', color: '#14245c' }}>Explore comfort tech →</a>
+            <a className="btn-navy" href="#/collection/all" style={{ background: '#fff', color: '#14245c' }}>Explore comfort tech →</a>
           </div>
         </div>
       )}

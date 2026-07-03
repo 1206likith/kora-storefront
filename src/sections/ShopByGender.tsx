@@ -20,7 +20,7 @@ export default function ShopByGender() {
       <div className="kora-wrap">
         <div className="shop-gender">
           {TILES.map((t) => (
-            <a key={t.key} className="gender-tile" href="#" style={{ background: t.bg, color: t.color }}>
+            <a key={t.key} className="gender-tile" href={`#/collection/${t.key}`} style={{ background: t.bg, color: t.color }}>
               <span className="gender-tile__label">{t.label}</span>
               <span className="gender-tile__sub">{t.sub}</span>
               <span className="gender-tile__cta">Shop now →</span>
