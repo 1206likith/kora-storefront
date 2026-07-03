@@ -7,7 +7,7 @@ on:
   repository_dispatch:
     types: [wix-content-updated]
   schedule:
-    - cron: '0 2 * * *'
+    - cron: '*/30 * * * *'
 
 permissions:
   contents: write
