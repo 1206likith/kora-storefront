@@ -17,9 +17,12 @@ export interface Product {
   badge?: 'NEW' | 'BESTSELLER' | 'SELLING FAST' | 'MOST LOVED';
   image?: string;
   gender?: 'men' | 'women' | 'kids';
+  description?: string;
+  images?: string[];
+  sizes?: string[];
 }
 
-interface RawProduct { i: string; b: string; n: string; c: string; p: number; m: number; g: string; im: string; x?: string; }
+interface RawProduct { i: string; b: string; n: string; c: string; p: number; m: number; g: string; im: string; x?: string; d?: string; ims?: string[]; sz?: string[]; }
 
 const BRAND_NAME: Record<string, string> = {
   kora: 'KORA', escalade: 'ESCALADE', asc: 'ASC', klasis: 'KLASIS',
@@ -39,6 +42,9 @@ export const DEMO_PRODUCTS: Product[] = (raw as RawProduct[]).map((r) => ({
   ...(r.m && r.m > r.p ? { mrp: r.m } : {}),
   ...(r.g ? { badge: r.g as Product['badge'] } : {}),
   ...(r.x ? { gender: r.x as Product['gender'] } : {}),
+  ...(r.d ? { description: r.d } : {}),
+  ...(r.ims && r.ims.length ? { images: r.ims.map(mediaUrl) } : {}),
+  ...(r.sz && r.sz.length ? { sizes: r.sz } : {}),
   image: mediaUrl(r.im),
 }));
 

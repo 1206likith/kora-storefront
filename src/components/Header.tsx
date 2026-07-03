@@ -60,7 +60,14 @@ const megaSlug = (item: string): string => {
 
 export default function Header({ cart = 0 }: { cart?: number }) {
   const [mega, setMega] = useState<string | null>(null);
+  const [query, setQuery] = useState('');
   const accentFor = (k: string) => (k === 'Women' ? '#a85c43' : k === 'Kids' ? '#e8730a' : '#14245c');
+
+  const submitSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const q = query.trim();
+    if (q) go('/search/' + encodeURIComponent(q));
+  };
 
   return (
     <header className="hdr" onMouseLeave={() => setMega(null)}>
@@ -108,13 +115,16 @@ export default function Header({ cart = 0 }: { cart?: number }) {
           ))}
         </nav>
         <div className="hdr__actions">
-          <form
-            className="hdr__search"
-            onSubmit={(e) => { e.preventDefault(); go('/collection/all'); }}
-          >
-            <span>⌕</span><input placeholder={c('header.search.placeholder', 'Search KORA')} />
+          <form className="hdr__search" onSubmit={submitSearch}>
+            <span>⌕</span>
+            <input
+              placeholder={c('header.search.placeholder', 'Search KORA')}
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              aria-label="Search KORA"
+            />
           </form>
-          <a className="hdr__icon" aria-label="Wishlist" href="#/">♥</a>
+          <a className="hdr__icon" aria-label="Wishlist" href="#/wishlist">♥</a>
           <a className="hdr__icon hdr__bag" aria-label="Bag" href="#/checkout">🛍<span className="hdr__badge">{cart}</span></a>
         </div>
       </div>

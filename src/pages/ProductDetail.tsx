@@ -7,9 +7,30 @@ import PlaceholderTile from '../components/PlaceholderTile';
 import { DEMO_PRODUCTS, inr, savePct, type Product } from '../data/catalog';
 import { brandByKey, onColor } from '../data/brands';
 import { go } from '../router';
+import { useCart } from '../cart';
+import { useWishlist } from '../wishlist';
 
-const SIZES = [6, 7, 8, 9, 10, 11];
+const FALLBACK_SIZES = ['6', '7', '8', '9', '10', '11'];
 const THUMBS = ['Front', 'Side', 'Back', 'Sole', 'Macro'];
+
+/* Product HTML is first-party (our own Wix Stores catalog), but sanitise as
+   defense-in-depth: parse it, drop script/style/iframe nodes and any inline
+   event handlers or javascript: URLs before it's ever inserted into the DOM. */
+function sanitizeHtml(html: string): string {
+  if (typeof window === 'undefined' || !('DOMParser' in window)) return '';
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  doc.querySelectorAll('script, style, iframe, object, embed, link, meta').forEach((n) => n.remove());
+  doc.querySelectorAll('*').forEach((el) => {
+    [...el.attributes].forEach((attr) => {
+      const name = attr.name.toLowerCase();
+      const value = attr.value.replace(/\s+/g, '').toLowerCase();
+      if (name.startsWith('on') || ((name === 'href' || name === 'src') && value.startsWith('javascript:'))) {
+        el.removeAttribute(attr.name);
+      }
+    });
+  });
+  return doc.body.innerHTML;
+}
 const TABS = ['Description', 'Materials & care', 'Size guide', 'Reviews (127)'];
 
 const SIZE_TABLE: Array<{ uk: number; cm: string; us: string }> = [
@@ -35,13 +56,35 @@ export default function ProductDetail({ id = 'esc-derby' }: Props) {
   const brand = brandByKey(p.brand)!;
   const accent = brand.accent;
   const onAccent = onColor(accent);
+  const cart = useCart();
+  const wishlist = useWishlist();
+  const saved = wishlist.has(p.id);
 
-  const [selectedSize, setSelectedSize] = useState<number | null>(null);
+  const sizes = p.sizes && p.sizes.length ? p.sizes : FALLBACK_SIZES;
+  const gallery = p.images && p.images.length > 1 ? p.images : p.image ? [p.image] : [];
+
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [sizeError, setSizeError] = useState(false);
+  const [mainImage, setMainImage] = useState<string | undefined>(gallery[0]);
+  const [added, setAdded] = useState(false);
   const [pin, setPin] = useState('');
   const [pinMsg, setPinMsg] = useState<{ ok: boolean; text: string } | null>(null);
   const [activeTab, setActiveTab] = useState(0);
 
   const pct = savePct(p.price, p.mrp);
+
+  const handleAdd = async () => {
+    if (!selectedSize) {
+      setSizeError(true);
+      return;
+    }
+    setSizeError(false);
+    const ok = await cart.add(p, selectedSize);
+    if (ok) {
+      setAdded(true);
+      setTimeout(() => setAdded(false), 2600);
+    }
+  };
 
   const checkPincode = () => {
     if (/^\d{6}$/.test(pin)) {
@@ -62,20 +105,41 @@ export default function ProductDetail({ id = 'esc-derby' }: Props) {
             {/* ---- Gallery ---- */}
             <div className="pdp-gallery">
               <div className="pdp-main">
-                {p.image ? (
-                  <img src={p.image} alt={p.name} style={{ width: '100%', aspectRatio: '1 / 1', objectFit: 'cover', borderRadius: 14, display: 'block' }} />
+                {mainImage ? (
+                  <img src={mainImage} alt={p.name} style={{ width: '100%', aspectRatio: '1 / 1', objectFit: 'cover', borderRadius: 14, display: 'block' }} />
                 ) : (
                   <PlaceholderTile label={p.name} ratio="1 / 1" radius={14} style={{ width: '100%' }} />
                 )}
                 <span className="pdp-chip" style={{ color: accent }}>{brand.name}</span>
-                <button className="pdp-wish" aria-label="Add to wishlist">♥</button>
+                <button
+                  className={saved ? 'pdp-wish is-saved' : 'pdp-wish'}
+                  aria-label={saved ? 'Remove from wishlist' : 'Add to wishlist'}
+                  aria-pressed={saved}
+                  onClick={() => wishlist.toggle(p.id)}
+                >
+                  {saved ? '♥' : '♡'}
+                </button>
                 <span className="pdp-360">360° view</span>
               </div>
               <div className="pdp-thumbs">
-                {(p.image ? [p.image] : []).map((src, i) => (
-                  <img key={i} src={src} alt={p.name} style={{ width: '100%', aspectRatio: '1 / 1', objectFit: 'cover', borderRadius: 10, display: 'block' }} />
-                ))}
-                {!p.image && THUMBS.map((t) => (
+                {gallery.length > 1 &&
+                  gallery.map((src, i) => (
+                    <img
+                      key={i}
+                      src={src}
+                      alt={`${p.name} view ${i + 1}`}
+                      onClick={() => setMainImage(src)}
+                      style={{
+                        width: '100%', aspectRatio: '1 / 1', objectFit: 'cover', borderRadius: 10,
+                        display: 'block', cursor: 'pointer',
+                        outline: src === mainImage ? `2px solid ${accent}` : 'none', outlineOffset: 2,
+                      }}
+                    />
+                  ))}
+                {gallery.length === 1 && (
+                  <img src={gallery[0]} alt={p.name} style={{ width: '100%', aspectRatio: '1 / 1', objectFit: 'cover', borderRadius: 10, display: 'block' }} />
+                )}
+                {gallery.length === 0 && THUMBS.map((t) => (
                   <PlaceholderTile key={t} label={t} ratio="1 / 1" radius={10} />
                 ))}
               </div>
@@ -111,7 +175,7 @@ export default function ProductDetail({ id = 'esc-derby' }: Props) {
                   </a>
                 </div>
                 <div className="pdp-sizes">
-                  {SIZES.map((s) => {
+                  {sizes.map((s) => {
                     const sel = selectedSize === s;
                     return (
                       <button
@@ -119,13 +183,16 @@ export default function ProductDetail({ id = 'esc-derby' }: Props) {
                         type="button"
                         className="pdp-size"
                         style={sel ? { background: accent, color: onAccent, borderColor: accent } : undefined}
-                        onClick={() => setSelectedSize(s)}
+                        onClick={() => { setSelectedSize(s); setSizeError(false); }}
                       >
                         {s}
                       </button>
                     );
                   })}
                 </div>
+                {sizeError && (
+                  <div className="pdp-pin-msg pdp-pin-msg--bad">Please select a size first</div>
+                )}
               </div>
 
               <div className="pdp-pincode">
@@ -151,14 +218,20 @@ export default function ProductDetail({ id = 'esc-derby' }: Props) {
                   type="button"
                   className="pdp-add"
                   style={{ background: accent, color: onAccent }}
-                  onClick={() => go('/checkout')}
+                  onClick={handleAdd}
                 >
-                  Add to bag
+                  {added ? 'Added ✓' : 'Add to bag'}
                 </button>
-                <button type="button" className="pdp-whatsapp">
-                  <span className="pdp-wa-dot" />
-                  Ask about this on WhatsApp
-                </button>
+                {added ? (
+                  <button type="button" className="pdp-whatsapp" onClick={() => go('/checkout')}>
+                    View bag →
+                  </button>
+                ) : (
+                  <button type="button" className="pdp-whatsapp">
+                    <span className="pdp-wa-dot" />
+                    Ask about this on WhatsApp
+                  </button>
+                )}
               </div>
 
               <div className="pdp-payment">UPI · GPay · PhonePe · Paytm · COD · 0% EMI</div>
@@ -187,12 +260,16 @@ export default function ProductDetail({ id = 'esc-derby' }: Props) {
               ))}
             </div>
             <div className="pdp-tabpanel">
-              {activeTab === 0 && (
-                <p>
-                  The {p.name} pairs a refined upper with a lightweight, cushioned midsole for comfort that
-                  lasts the whole day. Every pair is finished by hand and quality-checked before it ships.
-                </p>
-              )}
+              {activeTab === 0 &&
+                (p.description ? (
+                  // Our own Wix-authored product HTML.
+                  <div className="pdp-desc-html" dangerouslySetInnerHTML={{ __html: sanitizeHtml(p.description) }} />
+                ) : (
+                  <p>
+                    The {p.name} pairs a refined upper with a lightweight, cushioned midsole for comfort that
+                    lasts the whole day. Every pair is finished by hand and quality-checked before it ships.
+                  </p>
+                ))}
               {activeTab === 1 && (
                 <ul className="pdp-list">
                   <li>Genuine leather / performance-grade upper</li>

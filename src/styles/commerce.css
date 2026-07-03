@@ -1,0 +1,104 @@
+/* Commerce behaviour styles: add-to-bag toast, wishlist active state,
+   real cart line-item stepper, and search/wishlist page shells.
+   Reuses existing tokens + checkout (.co-*) classes wherever possible. */
+
+/* ---- Add-to-bag toast ---- */
+.cart-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  z-index: 2000;
+  background: var(--navy);
+  color: #fff;
+  font: 700 13px/1.3 var(--font-ui);
+  letter-spacing: 0.01em;
+  padding: 14px 22px;
+  border-radius: var(--r-pill);
+  box-shadow: var(--sh-dropdown);
+  max-width: min(90vw, 420px);
+  animation: kfade 0.25s ease both;
+}
+
+/* ---- Wishlist active (saved) state on the heart buttons ---- */
+.pcard__wish.is-saved,
+.pdp-wish.is-saved {
+  color: var(--orange);
+}
+.pcard__wish.is-saved { text-shadow: 0 0 0 var(--orange); }
+
+/* ---- Cart line-item quantity stepper ---- */
+.co-qty {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--r-input);
+  overflow: hidden;
+  flex: 0 0 auto;
+}
+.co-qty button {
+  width: 30px;
+  height: 30px;
+  font: 700 15px/1 var(--font-ui);
+  color: var(--navy);
+  background: var(--surface-warm);
+}
+.co-qty button:disabled { color: var(--muted-2); cursor: default; }
+.co-qty span {
+  min-width: 30px;
+  text-align: center;
+  font: 700 13px/1 var(--font-ui);
+  color: var(--ink);
+}
+
+.co-item-thumb {
+  width: 72px;
+  height: 72px;
+  flex: 0 0 auto;
+  border-radius: 10px;
+  object-fit: cover;
+  background: var(--surface-tile);
+}
+
+.co-item-lineprice {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+.co-note {
+  font: 500 12px/1.5 var(--font-ui);
+  color: var(--muted);
+  margin-top: 14px;
+  text-align: center;
+}
+
+.co-empty-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 60px 0;
+  text-align: center;
+}
+.co-empty-cta .btn-navy,
+.co-empty-cta .btn-orange { text-decoration: none; }
+
+.co-loading { padding: 60px 0; text-align: center; color: var(--muted); font: 600 14px/1 var(--font-ui); }
+
+/* ---- Search / Wishlist page shell (reuses collection grid) ---- */
+.srp-hero { padding: 40px 0 8px; }
+.srp-crumb { font: 600 12px/1 var(--font-ui); color: var(--muted); margin-bottom: 10px; }
+.srp-title { font: 800 26px/1.2 var(--font-display); color: var(--ink); }
+.srp-sub { font: 500 14px/1 var(--font-ui); color: var(--muted); margin-top: 8px; }
+.srp-empty {
+  padding: 48px 0 72px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+.srp-empty p { font: 500 15px/1.6 var(--font-ui); color: var(--body); max-width: 460px; }

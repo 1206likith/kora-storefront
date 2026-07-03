@@ -73,6 +73,18 @@ function pickMainImage(p) {
   const m = p.media || {};
   return mediaId(m.main?.image) || mediaId(m.itemsInfo?.items?.[0]?.image) || '';
 }
+function allImageIds(p) {
+  const items = p.media?.itemsInfo?.items || [];
+  const ids = items.map((it) => mediaId(it.image)).filter(Boolean);
+  const main = mediaId(p.media?.main?.image);
+  if (main && !ids.includes(main)) ids.unshift(main);
+  return [...new Set(ids)];
+}
+function sizesOf(p) {
+  const opt = (p.options || []).find((o) => /size/i.test(o.name || ''));
+  const choices = opt?.choicesSettings?.choices || [];
+  return choices.map((c) => c.name).filter(Boolean);
+}
 function priceOf(p) {
   const a = p.actualPriceRange?.minValue?.amount ?? p.actualPriceRange?.maxValue?.amount;
   const n = Number(a);
@@ -91,7 +103,7 @@ async function queryAllProducts(token) {
   for (let i = 0; i < 40; i++) {
     const r = await api('/stores/v3/products/query', {
       query: { cursorPaging: cursor ? { limit: 100, cursor } : { limit: 100 } },
-      fields: ['CURRENCY', 'MEDIA_ITEMS_INFO', 'DIRECT_CATEGORIES_INFO'],
+      fields: ['CURRENCY', 'MEDIA_ITEMS_INFO', 'DIRECT_CATEGORIES_INFO', 'PLAIN_DESCRIPTION', 'VARIANT_OPTION_CHOICE_NAMES'],
     }, token);
     for (const p of r.products || []) byId.set(p.id, p);
     cursor = r.pagingMetadata?.cursors?.next;
@@ -124,7 +136,7 @@ async function main() {
     if (!badge && catNames.includes('BEST SELLER')) badge = 'BESTSELLER';
     if (!badge && catNames.includes('NEW ARRIVALS')) badge = 'NEW';
     const price = priceOf(p);
-    return { i: p.id, b: brand, n: p.name, c: cat, p: price, m: mrpOf(p, price), g: badge, im: pickMainImage(p), x: gender };
+    return { i: p.id, b: brand, n: p.name, c: cat, p: price, m: mrpOf(p, price), g: badge, im: pickMainImage(p), x: gender, d: p.plainDescription || '', ims: allImageIds(p), sz: sizesOf(p) };
   }).filter((r) => r.n && r.im);
 
   if (rows.length < MIN_OK) bail(`only ${rows.length} usable rows after mapping`);

@@ -4,21 +4,25 @@
    #/product/<id>         product detail
    #/collection/<slug>    collection / PLP
    #/finder               AI shoe finder (slim chrome)
-   #/checkout             checkout (slim chrome)
+   #/checkout             cart (slim chrome)  — #/cart is an alias
+   #/search/<query>       search results
+   #/wishlist             saved products
    #/story                our story
 */
 import { useEffect, useState } from 'react';
 
 export interface Route {
-  name: 'home' | 'brand' | 'product' | 'collection' | 'finder' | 'checkout' | 'story';
+  name: 'home' | 'brand' | 'product' | 'collection' | 'finder' | 'checkout' | 'search' | 'wishlist' | 'story';
   param?: string;
 }
 
 function parse(): Route {
   const h = window.location.hash.replace(/^#\/?/, '');
-  const [name, param] = h.split('/');
-  const known = ['home', 'brand', 'product', 'collection', 'finder', 'checkout', 'story'];
-  return { name: (known.includes(name) ? name : 'home') as Route['name'], param };
+  const [rawName, ...rest] = h.split('/');
+  const name = rawName === 'cart' ? 'checkout' : rawName; // #/cart alias
+  const param = rest.join('/'); // keep encoded search queries intact
+  const known = ['home', 'brand', 'product', 'collection', 'finder', 'checkout', 'search', 'wishlist', 'story'];
+  return { name: (known.includes(name) ? name : 'home') as Route['name'], param: param || undefined };
 }
 
 export function useHashRoute(): Route {

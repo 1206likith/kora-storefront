@@ -4,6 +4,7 @@
 import PlaceholderTile from './PlaceholderTile';
 import { inr, savePct, badgeColor, type Product } from '../data/catalog';
 import { brandByKey } from '../data/brands';
+import { useWishlist } from '../wishlist';
 
 interface Props {
   p: Product;
@@ -17,6 +18,8 @@ export default function ProductCard({ p, width, onOpen, onAdd }: Props) {
   const accent = brand?.accent ?? 'var(--gold)';
   const badge = badgeColor(p.badge);
   const pct = savePct(p.price, p.mrp);
+  const wishlist = useWishlist();
+  const saved = wishlist.has(p.id);
 
   return (
     <article
@@ -34,7 +37,14 @@ export default function ProductCard({ p, width, onOpen, onAdd }: Props) {
         {p.badge && (
           <span className="pcard__badge" style={{ background: badge.bg, color: badge.fg }}>{p.badge}</span>
         )}
-        <button className="pcard__wish" aria-label="Add to wishlist" onClick={(e) => e.stopPropagation()}>♥</button>
+        <button
+          className={saved ? 'pcard__wish is-saved' : 'pcard__wish'}
+          aria-label={saved ? 'Remove from wishlist' : 'Add to wishlist'}
+          aria-pressed={saved}
+          onClick={(e) => { e.stopPropagation(); wishlist.toggle(p.id); }}
+        >
+          {saved ? '♥' : '♡'}
+        </button>
         <span className="pcard__cat">{p.cat}</span>
       </div>
       <div className="pcard__body">
