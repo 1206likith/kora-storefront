@@ -79,7 +79,7 @@ export default function Header({ cart = 0 }: { cart?: number }) {
         <div className="hdr__util-2">
           <span>Join <b>KORA Club</b> and get 10% off your first order</span>
           <span className="hdr__util-links">
-            <a href="#/checkout">{c('header.util.link.0.label', 'Track Order')}</a><i>·</i><a href="#/story">{c('header.util.link.1.label', 'Help')}</a><i>·</i><a href="#/">{c('header.util.link.2.label', 'Find A Store')}</a><i>·</i><a href="#/story">{c('header.util.link.3.label', 'Join KORA Club')}</a><i>◦</i><a href="#/">{c('header.util.link.4.label', 'Log In')}</a>
+            <a href="#/checkout">{c('header.util.link.0.label', 'Track Order')}</a><i>·</i><a href="#/contact">{c('header.util.link.1.label', 'Help')}</a><i>·</i><a href="#/stores">{c('header.util.link.2.label', 'Find A Store')}</a><i>·</i><a href="#/loyalty">{c('header.util.link.3.label', 'Join KORA Club')}</a><i>◦</i><a href="#/">{c('header.util.link.4.label', 'Log In')}</a>
           </span>
         </div>
       </div>

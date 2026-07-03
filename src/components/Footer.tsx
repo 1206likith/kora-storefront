@@ -55,18 +55,18 @@ export default function Footer() {
           </div>
           <div className="ft__col">
             <h4>{c('footer.column.help.heading', 'Help')}</h4>
-            <a href="#/checkout">{c('footer.column.help.item.0.label', 'Track order')}</a><a href="#/story">{c('footer.column.help.item.1.label', 'Returns & exchange')}</a><a href="#/story">{c('footer.column.help.item.2.label', 'Size guide')}</a>
-            <a href="#/">{c('footer.column.help.item.3.label', 'Store locator')}</a><a href="#/story">{c('footer.column.help.item.4.label', 'Contact us')}</a><a href="https://wa.me/919981234108" target="_blank" rel="noreferrer">{c('footer.column.help.item.5.label', 'WhatsApp support')}</a>
+            <a href="#/checkout">{c('footer.column.help.item.0.label', 'Track order')}</a><a href="#/policy/refund">{c('footer.column.help.item.1.label', 'Returns & exchange')}</a><a href="#/story">{c('footer.column.help.item.2.label', 'Size guide')}</a>
+            <a href="#/stores">{c('footer.column.help.item.3.label', 'Store locator')}</a><a href="#/contact">{c('footer.column.help.item.4.label', 'Contact us')}</a><a href="https://wa.me/919981234108" target="_blank" rel="noreferrer">{c('footer.column.help.item.5.label', 'WhatsApp support')}</a>
           </div>
           <div className="ft__col">
             <h4>{c('footer.column.company.heading', 'Company')}</h4>
             <a href="#/story">{c('footer.column.company.item.0.label', 'About KORA')}</a><a href="#/story">{c('footer.column.company.item.1.label', 'Our story')}</a><a href="#/story">{c('footer.column.company.item.2.label', 'Careers')}</a>
-            <a href="#/story">{c('footer.column.company.item.3.label', 'KORA Club loyalty')}</a><a href="#/story">{c('footer.column.company.item.4.label', 'Bulk enquiry')}</a>
+            <a href="#/loyalty">{c('footer.column.company.item.3.label', 'KORA Club loyalty')}</a><a href="#/contact">{c('footer.column.company.item.4.label', 'Bulk enquiry')}</a>
           </div>
           <div className="ft__col">
             <h4>{c('footer.column.more.heading', 'More info')}</h4>
-            <a href="#/story">{c('footer.column.more.item.0.label', 'Secure shopping')}</a><a href="#/story">{c('footer.column.more.item.1.label', 'Shipping & returns')}</a><a href="#/story">{c('footer.column.more.item.2.label', 'Terms & conditions')}</a>
-            <a href="#/story">{c('footer.column.more.item.3.label', 'Privacy policy')}</a><a href="#/">{c('footer.column.more.item.4.label', 'Sitemap')}</a>
+            <a href="#/policy/terms">{c('footer.column.more.item.0.label', 'Secure shopping')}</a><a href="#/policy/shipping">{c('footer.column.more.item.1.label', 'Shipping & returns')}</a><a href="#/policy/terms">{c('footer.column.more.item.2.label', 'Terms & conditions')}</a>
+            <a href="#/policy/privacy">{c('footer.column.more.item.3.label', 'Privacy policy')}</a><a href="#/">{c('footer.column.more.item.4.label', 'Sitemap')}</a>
           </div>
         </div>
         <div className="ft__fam kora-wrap">

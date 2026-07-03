@@ -9,27 +9,16 @@ import { brandByKey, onColor } from '../data/brands';
 import { go } from '../router';
 import { useCart } from '../cart';
 import { useWishlist } from '../wishlist';
+import DOMPurify from 'dompurify';
 
 const FALLBACK_SIZES = ['6', '7', '8', '9', '10', '11'];
 const THUMBS = ['Front', 'Side', 'Back', 'Sole', 'Macro'];
 
-/* Product HTML is first-party (our own Wix Stores catalog), but sanitise as
-   defense-in-depth: parse it, drop script/style/iframe nodes and any inline
-   event handlers or javascript: URLs before it's ever inserted into the DOM. */
+/* Product HTML is first-party (our own Wix Stores catalog); sanitise with the
+   vetted DOMPurify library as defense-in-depth before inserting into the DOM. */
 function sanitizeHtml(html: string): string {
-  if (typeof window === 'undefined' || !('DOMParser' in window)) return '';
-  const doc = new DOMParser().parseFromString(html, 'text/html');
-  doc.querySelectorAll('script, style, iframe, object, embed, link, meta').forEach((n) => n.remove());
-  doc.querySelectorAll('*').forEach((el) => {
-    [...el.attributes].forEach((attr) => {
-      const name = attr.name.toLowerCase();
-      const value = attr.value.replace(/\s+/g, '').toLowerCase();
-      if (name.startsWith('on') || ((name === 'href' || name === 'src') && value.startsWith('javascript:'))) {
-        el.removeAttribute(attr.name);
-      }
-    });
-  });
-  return doc.body.innerHTML;
+  if (typeof window === 'undefined') return '';
+  return DOMPurify.sanitize(html, { USE_PROFILES: { html: true } });
 }
 const TABS = ['Description', 'Materials & care', 'Size guide', 'Reviews (127)'];
 

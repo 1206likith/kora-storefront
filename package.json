@@ -13,9 +13,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/dompurify": "^3.0.5",
     "@wix/ecom": "^1.0.2238",
     "@wix/redirects": "^1.0.118",
     "@wix/sdk": "^1.21.12",
+    "dompurify": "^3.4.11",
     "js-cookie": "^3.0.8",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"

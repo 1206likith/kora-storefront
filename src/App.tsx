@@ -12,6 +12,10 @@ import Checkout from './pages/Checkout';
 import SearchResults from './pages/SearchResults';
 import Wishlist from './pages/Wishlist';
 import OurStory from './pages/OurStory';
+import PolicyPage from './pages/PolicyPage';
+import StoreLocator from './pages/StoreLocator';
+import Contact from './pages/Contact';
+import Loyalty from './pages/Loyalty';
 
 export default function App() {
   const r = useHashRoute();
@@ -28,6 +32,10 @@ export default function App() {
     case 'search':     page = <SearchResults query={r.param} />; break;
     case 'wishlist':   page = <Wishlist />; break;
     case 'story':      page = <OurStory />; break;
+    case 'policy':     page = <PolicyPage slug={r.param} />; break;
+    case 'stores':     page = <StoreLocator />; break;
+    case 'contact':    page = <Contact />; break;
+    case 'loyalty':    page = <Loyalty />; break;
     default:           page = <Home />;
   }
 
