@@ -1,0 +1,49 @@
+name: Save content + deploy
+
+on:
+  repository_dispatch:
+    types: [content-save]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install --no-audit --no-fund
+      - name: Apply content-editor edits to Wix
+        run: node scripts/apply-content.mjs
+        env:
+          WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
+          WIX_ACCOUNT_ID: 5da6bdf3-c3db-4249-9420-26ff0e4ee037
+          WIX_SITE_ID: 2bfe03ee-e7a7-41ab-a1a0-cf8398b7ea83
+          CONTENT_CHANGES: ${{ toJSON(github.event.client_payload.changes) }}
+      - name: Build (re-syncs catalogue + content from Wix)
+        run: npm run build
+        env:
+          WIX_CLIENT_ID: ${{ secrets.WIX_CLIENT_ID }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
