@@ -1,0 +1,23 @@
+{
+  "note": "Wix headless catalogue config for the build-time sync. Backend = 'KORA Retail' (siteId 2bfe03ee), which the site reads via the existing headless client WIX_CLIENT_ID=0d84331d-ca62-4785-9541-7bc11f54fa39 (public read-only). The client is bound to this site, so the sync needs only WIX_CLIENT_ID. Brand/type derived from categories by NAME (below).",
+  "siteId": "2bfe03ee-e7a7-41ab-a1a0-cf8398b7ea83",
+  "clientId": "0d84331d-ca62-4785-9541-7bc11f54fa39",
+  "storesAppId": "215238eb-22a5-4c36-9e7b-e7c08025e04e",
+  "brandKeyByCategoryName": {
+    "KORA": "kora",
+    "ESCALADE": "escalade",
+    "ASC": "asc",
+    "KLASIS": "klasis",
+    "KORAPROX": "koraprox",
+    "MEDIPLUS": "mediplus",
+    "ROBUR": "robur",
+    "KKIDS": "kkids"
+  },
+  "typeCategoryNames": [
+    "SANDALS", "HEELS", "CASUAL SHOES", "FORMAL SHOES", "SNEAKERS", "LOAFERS",
+    "FLATS", "BALLET FLATS", "BELT SANDALS", "CASUAL SANDALS", "FLIP FLOPS",
+    "HOME WEAR", "SLIDERS", "SLIPPERS", "WEDGES"
+  ],
+  "badgeCategoryNames": { "BEST SELLER": "BESTSELLER", "NEW ARRIVALS": "NEW" },
+  "ribbonToBadge": { "New Arrival": "NEW", "Best Seller": "BESTSELLER", "Bestseller": "BESTSELLER" }
+}

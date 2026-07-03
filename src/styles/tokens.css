@@ -1,0 +1,105 @@
+/* ============================================================
+   KORA Storefront — Design Tokens
+   Source of truth: SPEC.md (KORA · by Ajantha Shoe Co.)
+   Light theme with navy + orange chrome. All values verbatim
+   from the spec so the build stays pixel-faithful.
+   ============================================================ */
+
+:root {
+  /* ---- Core palette ---- */
+  --navy: #14245c;          /* primary: logo, headings, nav, primary buttons, utility bar */
+  --navy-deep: #0f1838;     /* comfort-tech bg, button hover */
+  --navy-deep-2: #0e1a45;
+  --navy-panel: #16224a;    /* cards on navy sections */
+  --orange: #e2570f;        /* accent: sale, badges, CTAs, bottom header rule */
+  --ink: #1c1c1a;           /* body headings on light */
+  --body: #5c5a52;          /* body text */
+  --muted: #86847b;         /* secondary/eyebrow text */
+  --muted-2: #9a9892;
+  --page: #ffffff;          /* page background (LIGHT MODE default) */
+  --surface-warm: #f6f4ef;  /* section + footer backgrounds */
+  --surface-warm-2: #f1efe9;
+  --surface-tile: #eef0f6;  /* placeholder stripe tiles */
+  --surface-tile-2: #e4e7f1;
+  --line: rgba(20, 36, 92, 0.10);
+  --line-soft: rgba(20, 36, 92, 0.08);
+  --line-strong: rgba(20, 36, 92, 0.12);
+  --success: #5ed17e;       /* savings %, in-stock, free delivery */
+  --whatsapp: #1ebe5d;
+  --whatsapp-ink: #04210f;
+  --gold: #c9a227;          /* legacy KORA accent, dark worlds + eyebrows */
+
+  /* ---- Gradients ---- */
+  --grad-orange-hero: linear-gradient(115deg, #f5470f, #e23a0c, #cf3208);
+  --grad-orange-banner: linear-gradient(120deg, #c2410c, #e0590f);
+  --grad-green: linear-gradient(120deg, #1f5a23, #2c7a32);
+
+  /* ---- ProductCard (dark by design) ---- */
+  --card-bg: #16161a;
+  --card-border: rgba(255, 255, 255, 0.08);
+  --card-title: #f4f3ef;
+
+  /* ---- Typography ---- */
+  --font-display: 'Archivo', 'Arial Black', sans-serif; /* display/logo/numerals — 500-900 */
+  --font-ui: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif; /* body/UI 400-800 */
+  --font-serif: 'Spectral', Georgia, serif; /* editorial pull quotes / story */
+
+  /* ---- Radius ---- */
+  --r-card: 14px;      /* cards/tiles 12-16 */
+  --r-pill: 34px;      /* pills/CTAs 30-40 */
+  --r-input: 9px;      /* inputs 8-9 */
+  --r-chip: 7px;       /* small chips 6-8 */
+
+  /* ---- Shadows ---- */
+  --sh-dropdown: 0 18px 34px rgba(20, 36, 92, 0.12);
+  --sh-sale-cta: 0 10px 28px rgba(20, 36, 92, 0.35);
+  --sh-fab: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+  /* ---- Layout ---- */
+  --content-max: 1240px;   /* max content width 1180-1240 */
+  --section-pad-y: 56px;
+  --section-pad-x: 40px;
+}
+
+/* Per-brand color worlds (primary = world bg, accent = highlight, light = theme flip) */
+:root {
+  --kora-primary: #1a1a2e;      --kora-accent: #c9a227;
+  --escalade-primary: #0a0a0a;  --escalade-accent: #7fff7f;
+  --asc-primary: #e8c4b8;       --asc-accent: #a85c43;      /* light:true */
+  --klasis-primary: #5d4037;    --klasis-accent: #e8d9b5;
+  --koraprox-primary: #1f5a23;  --koraprox-accent: #b0bec5;
+  --mediplus-primary: #f4f6f7;  --mediplus-accent: #00acc1; /* light:true */
+  --robur-primary: #2b3942;     --robur-accent: #d24a17;
+  --kkids-primary: #e8730a;     --kkids-accent: #ffd600;
+}
+
+/* ---- Mobile section padding ---- */
+@media (max-width: 640px) {
+  :root {
+    --section-pad-y: 34px;
+    --section-pad-x: 18px;
+  }
+}
+
+/* ---- Keyframes (SPEC) ---- */
+@keyframes kbump { 0%,100% { transform: scale(1); } 45% { transform: scale(1.35); } }
+@keyframes kfade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes kfloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes kmarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ---- Base reset ---- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: var(--font-ui);
+  color: var(--body);
+  background: var(--page);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+img { display: block; max-width: 100%; }
+ul { list-style: none; }
+
+.kora-wrap { max-width: var(--content-max); margin: 0 auto; }

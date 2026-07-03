@@ -1,0 +1,53 @@
+/* PopularSearches — chip cloud + brand rail */
+
+.pop-search__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.pop-search__chip {
+  background: var(--surface-warm);
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  padding: 8px 16px;
+  font: 500 13px/1 var(--font-ui);
+  color: var(--ink);
+  transition: border-color 0.2s ease;
+}
+
+.pop-search__chip:hover {
+  border-color: var(--navy);
+}
+
+.pop-search__brands-label {
+  font: 700 11px/1 var(--font-ui);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.brand-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 16px 8px 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--page);
+}
+
+.brand-chip__swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  flex: 0 0 auto;
+}
+
+.brand-chip__name {
+  font: 800 14px/1 var(--font-display);
+  color: var(--ink);
+  white-space: nowrap;
+}

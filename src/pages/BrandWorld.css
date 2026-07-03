@@ -1,0 +1,253 @@
+/* BrandWorld — per-brand color-world page.
+   Color values are supplied at runtime via inline CSS custom properties
+   (--bw-primary / --bw-accent / --bw-text / --bw-muted / --bw-on-accent)
+   set in BrandWorld.tsx from data/brands.ts, so this file stays brand-agnostic. */
+
+.bw {
+  background: var(--page);
+}
+
+/* ---------- Hero ---------- */
+.bw-hero {
+  background: var(--bw-primary);
+  color: var(--bw-text);
+  padding: 96px var(--section-pad-x) 84px;
+}
+
+.bw-hero__inner {
+  max-width: 860px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bw-hero__eyebrow {
+  font: 800 12px/1 var(--font-ui);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bw-accent);
+  margin-bottom: 18px;
+}
+
+.bw-hero__name {
+  font: 900 clamp(46px, 9vw, 92px)/0.95 var(--font-display);
+  letter-spacing: -1.5px;
+  margin: 0;
+}
+
+.bw-hero__bar {
+  display: block;
+  width: 76px;
+  height: 5px;
+  border-radius: 3px;
+  background: var(--bw-accent);
+  margin: 22px 0 26px;
+}
+
+.bw-hero__tagline {
+  font: 700 22px/1.35 var(--font-ui);
+  color: var(--bw-text);
+  margin-bottom: 14px;
+}
+
+.bw-hero__copy {
+  font: 400 16px/1.7 var(--font-ui);
+  color: var(--bw-muted);
+  max-width: 560px;
+  margin: 0 auto 36px;
+}
+
+.bw-hero__ctas {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.bw-hero__shop {
+  background: var(--bw-accent);
+  color: var(--bw-on-accent);
+  padding: 15px 30px;
+  border-radius: var(--r-pill);
+  font: 700 13px/1 var(--font-ui);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+.bw-hero__shop:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.bw-hero__story {
+  background: transparent;
+  color: var(--bw-text);
+  border: 1px solid color-mix(in srgb, var(--bw-text) 40%, transparent);
+  padding: 15px 30px;
+  border-radius: var(--r-pill);
+  font: 700 13px/1 var(--font-ui);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.bw-hero__story:hover {
+  border-color: var(--bw-text);
+  background: color-mix(in srgb, var(--bw-text) 8%, transparent);
+}
+
+@media (max-width: 640px) {
+  .bw-hero { padding: 56px 18px 48px; }
+  .bw-hero__name { font-size: clamp(34px, 11vw, 46px); letter-spacing: -0.5px; }
+  .bw-hero__tagline { font-size: 18px; }
+}
+
+/* ---------- Sub-nav ---------- */
+.bw-subnav {
+  background: var(--page);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.bw-subnav__rail {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 16px var(--section-pad-x);
+  scrollbar-width: none;
+}
+.bw-subnav__rail::-webkit-scrollbar { display: none; }
+
+.bw-pill {
+  flex: 0 0 auto;
+  padding: 10px 20px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line);
+  background: var(--page);
+  color: var(--ink);
+  font: 700 12px/1 var(--font-ui);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.bw-pill:hover { border-color: var(--navy); }
+.bw-pill--active {
+  background: var(--bw-primary);
+  color: var(--bw-text);
+  border-color: var(--bw-primary);
+}
+
+/* ---------- Drop countdown ---------- */
+.bw-drop {
+  padding: var(--section-pad-y) var(--section-pad-x);
+  background: var(--page);
+}
+
+.bw-drop__card {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  background: #0a0a0a;
+  border: 1px solid var(--bw-accent);
+  border-radius: var(--r-card);
+  padding: 48px 32px;
+}
+
+.bw-drop__eyebrow {
+  display: inline-block;
+  font: 800 11px/1 var(--font-ui);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--bw-accent);
+  margin-bottom: 14px;
+}
+
+.bw-drop__title {
+  font: 900 30px/1.15 var(--font-display);
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.bw-drop__meta {
+  font: 500 14px/1.5 var(--font-ui);
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 26px;
+}
+
+.bw-drop__notify {
+  background: var(--bw-accent);
+  color: var(--bw-on-accent);
+  padding: 14px 28px;
+  border-radius: var(--r-pill);
+  font: 700 12px/1 var(--font-ui);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: filter 0.2s ease;
+}
+.bw-drop__notify:hover { filter: brightness(1.08); }
+
+@media (max-width: 640px) {
+  .bw-drop__card { padding: 36px 22px; }
+  .bw-drop__title { font-size: 24px; }
+}
+
+/* ---------- Brand story panel ---------- */
+.bw-story {
+  background: var(--bw-primary);
+  color: var(--bw-text);
+  padding: 92px var(--section-pad-x);
+}
+
+.bw-story__statement {
+  max-width: 760px;
+  margin: 0 auto;
+  text-align: center;
+  font: 500 36px/1.4 var(--font-serif);
+  letter-spacing: -0.2px;
+}
+
+@media (max-width: 640px) {
+  .bw-story { padding: 56px 18px; }
+  .bw-story__statement { font-size: 26px; }
+}
+
+/* ---------- The craft ---------- */
+.bw-craft__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.bw-craft__card {
+  background: var(--page);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: 26px 22px;
+}
+
+.bw-craft__diamond {
+  display: block;
+  width: 14px;
+  height: 14px;
+  background: var(--bw-accent);
+  transform: rotate(45deg);
+  margin-bottom: 18px;
+}
+
+.bw-craft__title {
+  font: 800 16px/1.3 var(--font-display);
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.bw-craft__copy {
+  font: 400 14px/1.6 var(--font-ui);
+  color: var(--body);
+}
+
+@media (max-width: 900px) {
+  .bw-craft__grid { grid-template-columns: repeat(2, 1fr); }
+}

@@ -1,0 +1,52 @@
+.shop-gender {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+@media (max-width: 900px) {
+  .shop-gender {
+    grid-template-columns: 1fr;
+  }
+}
+
+.gender-tile {
+  position: relative;
+  min-height: 300px;
+  border-radius: var(--r-card);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.gender-tile:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 34px rgba(20, 36, 92, 0.18);
+}
+
+.gender-tile__label {
+  font: 900 40px/1.02 var(--font-display);
+  letter-spacing: -0.5px;
+  margin-bottom: 10px;
+}
+
+.gender-tile__sub {
+  font: 600 14px/1.4 var(--font-ui);
+  opacity: 0.85;
+  margin-bottom: 18px;
+}
+
+.gender-tile__cta {
+  font: 700 13px/1 var(--font-ui);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  align-self: flex-start;
+}
+
+@media (max-width: 640px) {
+  .gender-tile__label { font-size: 30px; }
+}

@@ -1,0 +1,163 @@
+/* OurStory — the KORA brand-house narrative page */
+
+.story {
+  background: var(--page);
+}
+
+/* ---------- Hero ---------- */
+.story-hero {
+  background: linear-gradient(160deg, var(--navy) 0%, var(--navy-deep-2, #0e1a45) 100%);
+  color: #fff;
+  padding: 120px var(--section-pad-x);
+}
+
+.story-hero__statement {
+  max-width: 780px;
+  margin: 0 auto;
+  text-align: center;
+  font: 500 46px/1.3 var(--font-serif);
+  letter-spacing: -0.3px;
+}
+
+.story-hero__statement em {
+  font-style: italic;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .story-hero { padding: 72px 18px; }
+  .story-hero__statement { font-size: 30px; }
+}
+
+/* ---------- We make shoes the old way. (split) ---------- */
+.story-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.story-split__copy .h2 { margin-bottom: 16px; }
+
+.story-split__p {
+  font: 400 16px/1.75 var(--font-ui);
+  color: var(--body);
+  max-width: 480px;
+}
+
+@media (max-width: 800px) {
+  .story-split { grid-template-columns: 1fr; gap: 26px; }
+}
+
+/* ---------- The materials ---------- */
+.story-materials__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+.story-materials__caption {
+  margin-top: 14px;
+  font: 400 14px/1.6 var(--font-ui);
+  color: var(--body);
+}
+
+@media (max-width: 900px) {
+  .story-materials__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---------- Eight worlds, one family ---------- */
+.story-hub__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.story-hub__tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  text-align: left;
+  background: var(--surface-warm);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: 22px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.story-hub__tile:hover {
+  transform: translateY(-3px);
+  border-color: var(--navy);
+}
+
+.story-hub__swatch {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.story-hub__name {
+  font: 800 17px/1.2 var(--font-display);
+  color: var(--ink);
+}
+
+.story-hub__tagline {
+  font: 500 13px/1.4 var(--font-ui);
+  color: var(--body);
+}
+
+.story-hub__cat {
+  font: 700 10px/1 var(--font-ui);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+@media (max-width: 900px) {
+  .story-hub__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ---------- Proudly Indian ---------- */
+.story-india {
+  text-align: center;
+}
+
+.story-india__flag {
+  display: block;
+  font-size: 42px;
+  margin-bottom: 14px;
+}
+
+.story-india__h2 {
+  margin-bottom: 34px;
+}
+
+.story-india__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+.story-india__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.story-india__value {
+  font: 900 34px/1 var(--font-display);
+  color: var(--navy);
+}
+
+.story-india__label {
+  font: 600 13px/1.4 var(--font-ui);
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .story-india__stats { grid-template-columns: repeat(2, 1fr); }
+}

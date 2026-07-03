@@ -1,0 +1,60 @@
+/* ComfortTech — dark navy technology band */
+
+.comfort-tech {
+  background: var(--navy-deep);
+}
+
+.comfort-tech__eyebrow {
+  font: 700 11px/1 var(--font-ui);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--orange);
+  margin-bottom: 10px;
+}
+
+.comfort-tech__title {
+  font: 800 34px/1.05 var(--font-display);
+  letter-spacing: -0.5px;
+  color: #fff;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 640px) {
+  .comfort-tech__title { font-size: 26px; }
+}
+
+.comfort-tech__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+@media (max-width: 640px) {
+  .comfort-tech__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.comfort-tech__card {
+  background: var(--navy-panel);
+  border-radius: 14px;
+  padding: 26px;
+}
+
+.comfort-tech__glyph {
+  width: 14px;
+  height: 14px;
+  background: var(--orange);
+  border-radius: 3px;
+  transform: rotate(45deg);
+  margin-bottom: 18px;
+}
+
+.comfort-tech__name {
+  font: 700 18px/1.25 var(--font-display);
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.comfort-tech__caption {
+  font: 400 13px/1.5 var(--font-ui);
+  color: rgba(255, 255, 255, 0.7);
+}

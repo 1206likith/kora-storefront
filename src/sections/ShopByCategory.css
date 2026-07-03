@@ -1,0 +1,44 @@
+/* ShopByCategory — Skechers-style "What's Hot" tile row */
+
+.shop-cat__sub {
+  font: 500 14px/1 var(--font-ui);
+  color: var(--muted);
+}
+
+.shop-cat__grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .shop-cat__grid { grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .shop-cat__grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+}
+
+.shop-cat__tile {
+  cursor: pointer;
+  text-align: center;
+}
+
+.shop-cat__thumb {
+  transition: transform 0.22s ease;
+}
+
+.shop-cat__tile:hover .shop-cat__thumb {
+  transform: translateY(-4px);
+}
+
+.shop-cat__tile:hover .shop-cat__thumb > div {
+  border-color: var(--navy) !important;
+}
+
+.shop-cat__label {
+  display: block;
+  margin-top: 10px;
+  font: 700 13px/1.2 var(--font-ui);
+  color: var(--ink);
+}
