@@ -62,13 +62,20 @@ export default function ProductDetail({ id = 'esc-derby' }: Props) {
             {/* ---- Gallery ---- */}
             <div className="pdp-gallery">
               <div className="pdp-main">
-                <PlaceholderTile label={p.name} ratio="1 / 1" radius={14} style={{ width: '100%' }} />
+                {p.image ? (
+                  <img src={p.image} alt={p.name} style={{ width: '100%', aspectRatio: '1 / 1', objectFit: 'cover', borderRadius: 14, display: 'block' }} />
+                ) : (
+                  <PlaceholderTile label={p.name} ratio="1 / 1" radius={14} style={{ width: '100%' }} />
+                )}
                 <span className="pdp-chip" style={{ color: accent }}>{brand.name}</span>
                 <button className="pdp-wish" aria-label="Add to wishlist">♥</button>
                 <span className="pdp-360">360° view</span>
               </div>
               <div className="pdp-thumbs">
-                {THUMBS.map((t) => (
+                {(p.image ? [p.image] : []).map((src, i) => (
+                  <img key={i} src={src} alt={p.name} style={{ width: '100%', aspectRatio: '1 / 1', objectFit: 'cover', borderRadius: 10, display: 'block' }} />
+                ))}
+                {!p.image && THUMBS.map((t) => (
                   <PlaceholderTile key={t} label={t} ratio="1 / 1" radius={10} />
                 ))}
               </div>
