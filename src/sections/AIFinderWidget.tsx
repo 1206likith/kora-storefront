@@ -1,5 +1,6 @@
 import './AIFinderWidget.css';
 import { DEMO_PRODUCTS, inr } from '../data/catalog';
+import { c } from '../data/content';
 
 const MATCHES = [
   { pct: 98, p: DEMO_PRODUCTS[5] },
@@ -13,15 +14,15 @@ export default function AIFinderWidget() {
       <div className="kora-wrap">
         <div className="ai-card">
           <div className="ai-copy">
-            <span className="ai-chip">KORA AI</span>
-            <h2 className="ai-heading">Not sure what you need?</h2>
-            <p className="ai-sub">Tell our AI what you're after — occasion, budget, comfort level — and get matched to the right pair in seconds.</p>
-            <a className="btn-orange" href="#/finder">Find my shoe →</a>
+            <span className="ai-chip">{c('home.aiFinder.chip', 'KORA AI')}</span>
+            <h2 className="ai-heading">{c('home.aiFinder.heading', 'Not sure what you need?')}</h2>
+            <p className="ai-sub">{c('home.aiFinder.sub', "Tell our AI what you're after — occasion, budget, comfort level — and get matched to the right pair in seconds.")}</p>
+            <a className="btn-orange" href="#/finder">{c('home.aiFinder.ctaLabel', 'Find my shoe →')}</a>
           </div>
           <div className="ai-matches">
-            {MATCHES.map(({ pct, p }) => (
+            {MATCHES.map(({ pct, p }, i) => (
               <div className="ai-match-row" key={p.id}>
-                <span className="ai-match-pct">{pct}%</span>
+                <span className="ai-match-pct">{c(`home.aiFinder.match.${i}.pct`, String(pct))}%</span>
                 <span className="ai-match-name">{p.name}</span>
                 <span className="ai-match-price">{inr(p.price)}</span>
               </div>

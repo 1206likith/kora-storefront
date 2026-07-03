@@ -1,5 +1,6 @@
 import ProductCard from '../components/ProductCard';
 import { bestsellers } from '../data/catalog';
+import { c } from '../data/content';
 import { go } from '../router';
 
 export default function Bestsellers() {
@@ -10,10 +11,10 @@ export default function Bestsellers() {
       <div className="kora-wrap">
         <div className="sec-head">
           <div>
-            <div className="eyebrow">Loved by thousands</div>
-            <h2 className="h2">Bestsellers</h2>
+            <div className="eyebrow">{c('home.bestsellers.eyebrow', 'Loved by thousands')}</div>
+            <h2 className="h2">{c('home.bestsellers.heading', 'Bestsellers')}</h2>
           </div>
-          <a className="viewall" href="#/collection/bestsellers">View all →</a>
+          <a className="viewall" href="#/collection/bestsellers">{c('home.bestsellers.viewAllLabel', 'View all →')}</a>
         </div>
         <div className="pgrid">
           {products.map((p) => (

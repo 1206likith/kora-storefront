@@ -1,4 +1,5 @@
 import './ShopByGender.css';
+import { c, cimg } from '../data/content';
 
 interface Tile {
   key: string;
@@ -19,13 +20,19 @@ export default function ShopByGender() {
     <section className="section">
       <div className="kora-wrap">
         <div className="shop-gender">
-          {TILES.map((t) => (
-            <a key={t.key} className="gender-tile" href={`#/collection/${t.key}`} style={{ background: t.bg, color: t.color }}>
-              <span className="gender-tile__label">{t.label}</span>
-              <span className="gender-tile__sub">{t.sub}</span>
-              <span className="gender-tile__cta">Shop now →</span>
-            </a>
-          ))}
+          {TILES.map((t, i) => {
+            const img = cimg(`home.shopByGender.tile.${i}.image`);
+            const style = img
+              ? { background: t.bg, color: t.color, backgroundImage: `url(${img})`, backgroundSize: 'cover' }
+              : { background: t.bg, color: t.color };
+            return (
+              <a key={t.key} className="gender-tile" href={`#/collection/${t.key}`} style={style}>
+                <span className="gender-tile__label">{c(`home.shopByGender.tile.${i}.label`, t.label)}</span>
+                <span className="gender-tile__sub">{c(`home.shopByGender.tile.${i}.sub`, t.sub)}</span>
+                <span className="gender-tile__cta">{c(`home.shopByGender.tile.${i}.ctaLabel`, 'Shop now →')}</span>
+              </a>
+            );
+          })}
         </div>
       </div>
     </section>

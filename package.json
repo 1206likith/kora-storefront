@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "sync": "node scripts/sync-catalog.mjs && node scripts/sync-about.mjs",
-    "prebuild": "node scripts/sync-catalog.mjs && node scripts/sync-about.mjs",
+    "sync": "node scripts/sync-catalog.mjs && node scripts/sync-content.mjs",
+    "prebuild": "node scripts/sync-catalog.mjs && node scripts/sync-content.mjs",
     "build": "tsc -b && vite build",
     "build:nosync": "tsc -b && vite build",
     "lint": "oxlint",

@@ -1,6 +1,7 @@
 import './Under1000Banner.css';
 import ProductCard from '../components/ProductCard';
 import { DEMO_PRODUCTS } from '../data/catalog';
+import { c } from '../data/content';
 import { go } from '../router';
 
 export default function Under1000Banner() {
@@ -11,10 +12,10 @@ export default function Under1000Banner() {
       <div className="kora-wrap">
         <div className="u1k-card">
           <div className="u1k-copy">
-            <div className="u1k-eyebrow">Budget buys</div>
-            <h2 className="u1k-title">Everything under ₹1000</h2>
-            <p className="u1k-sub">Great shoes shouldn't cost a fortune. Sliders, flats, and everyday styles that keep it light on your wallet.</p>
-            <a className="u1k-cta" href="#/collection/under-1000">Shop under ₹1000 →</a>
+            <div className="u1k-eyebrow">{c('home.under1000.eyebrow', 'Budget buys')}</div>
+            <h2 className="u1k-title">{c('home.under1000.title', 'Everything under ₹1000')}</h2>
+            <p className="u1k-sub">{c('home.under1000.sub', "Great shoes shouldn't cost a fortune. Sliders, flats, and everyday styles that keep it light on your wallet.")}</p>
+            <a className="u1k-cta" href="#/collection/under-1000">{c('home.under1000.ctaLabel', 'Shop under ₹1000 →')}</a>
           </div>
           <div className="u1k-products">
             {products.map((p) => (

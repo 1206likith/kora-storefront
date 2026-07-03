@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { BRANDS } from '../data/brands';
 import { slugify } from '../data/catalog';
+import { c } from '../data/content';
 import { go } from '../router';
 import '../styles/chrome.css';
 
@@ -66,12 +67,12 @@ export default function Header({ cart = 0 }: { cart?: number }) {
       {/* Utility bar (two-tier, ASICS) */}
       <div className="hdr__util">
         <div className="hdr__util-1">
-          Cash on Delivery now available on select PIN codes for all orders between ₹599 and ₹14,999 · No COD charges for a limited period
+          {c('header.util.bar1', 'Cash on Delivery now available on select PIN codes for all orders between ₹599 and ₹14,999 · No COD charges for a limited period')}
         </div>
         <div className="hdr__util-2">
           <span>Join <b>KORA Club</b> and get 10% off your first order</span>
           <span className="hdr__util-links">
-            <a href="#/checkout">Track Order</a><i>·</i><a href="#/story">Help</a><i>·</i><a href="#/">Find A Store</a><i>·</i><a href="#/story">Join KORA Club</a><i>◦</i><a href="#/">Log In</a>
+            <a href="#/checkout">{c('header.util.link.0.label', 'Track Order')}</a><i>·</i><a href="#/story">{c('header.util.link.1.label', 'Help')}</a><i>·</i><a href="#/">{c('header.util.link.2.label', 'Find A Store')}</a><i>·</i><a href="#/story">{c('header.util.link.3.label', 'Join KORA Club')}</a><i>◦</i><a href="#/">{c('header.util.link.4.label', 'Log In')}</a>
           </span>
         </div>
       </div>
@@ -79,17 +80,20 @@ export default function Header({ cart = 0 }: { cart?: number }) {
       {/* Announcement marquee (mobile-style rotating, shown as continuous strip) */}
       <div className="hdr__announce">
         <div className="hdr__marquee">
-          {[...ANNOUNCE, ...ANNOUNCE, ...ANNOUNCE, ...ANNOUNCE].map((m, i) => (
-            <span key={i} className="hdr__announce-item"><i>◆</i>{m}</span>
-          ))}
+          {(() => {
+            const ann = ANNOUNCE.map((m, k) => c(`header.announce.${k}`, m));
+            return [...ann, ...ann, ...ann, ...ann].map((m, i) => (
+              <span key={i} className="hdr__announce-item"><i>◆</i>{m}</span>
+            ));
+          })()}
         </div>
       </div>
 
       {/* Main bar */}
       <div className="hdr__main">
         <a className="hdr__logo" href="#/">
-          <span className="hdr__logo-kora">KORA</span>
-          <span className="hdr__logo-cap">by Ajantha Shoe Co.</span>
+          <span className="hdr__logo-kora">{c('header.logo.primary', 'KORA')}</span>
+          <span className="hdr__logo-cap">{c('header.logo.caption', 'by Ajantha Shoe Co.')}</span>
         </a>
         <nav className="hdr__nav">
           {NAV.map((n) => (
@@ -108,7 +112,7 @@ export default function Header({ cart = 0 }: { cart?: number }) {
             className="hdr__search"
             onSubmit={(e) => { e.preventDefault(); go('/collection/all'); }}
           >
-            <span>⌕</span><input placeholder="Search KORA" />
+            <span>⌕</span><input placeholder={c('header.search.placeholder', 'Search KORA')} />
           </form>
           <a className="hdr__icon" aria-label="Wishlist" href="#/">♥</a>
           <a className="hdr__icon hdr__bag" aria-label="Bag" href="#/checkout">🛍<span className="hdr__badge">{cart}</span></a>

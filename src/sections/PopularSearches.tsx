@@ -1,5 +1,6 @@
 import './PopularSearches.css';
 import { BRANDS } from '../data/brands';
+import { c } from '../data/content';
 
 const SEARCHES: { label: string; slug: string }[] = [
   { label: "Men's Sneakers", slug: 'men' },
@@ -21,17 +22,17 @@ export default function PopularSearches() {
     <section className="section">
       <div className="kora-wrap">
         <div className="sec-head">
-          <h2 className="h2">Popular searches</h2>
+          <h2 className="h2">{c('home.popularSearches.heading', 'Popular searches')}</h2>
         </div>
         <div className="pop-search__chips">
-          {SEARCHES.map((s) => (
+          {SEARCHES.map((s, i) => (
             <a href={`#/collection/${s.slug}`} className="pop-search__chip" key={s.label}>
-              {s.label}
+              {c(`home.popularSearches.chip.${i}.label`, s.label)}
             </a>
           ))}
         </div>
 
-        <p className="pop-search__brands-label">Our brands</p>
+        <p className="pop-search__brands-label">{c('home.popularSearches.brandsLabel', 'Our brands')}</p>
         <div className="rail">
           {BRANDS.map((b) => (
             <a className="brand-chip" key={b.key} href={`#/brand/${b.key}`}>

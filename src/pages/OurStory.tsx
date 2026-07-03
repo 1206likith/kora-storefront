@@ -2,6 +2,7 @@
 import './OurStory.css';
 import PlaceholderTile from '../components/PlaceholderTile';
 import { BRANDS } from '../data/brands';
+import { c, cimg } from '../data/content';
 import { go } from '../router';
 
 const MATERIALS = [
@@ -33,15 +34,14 @@ export default function OurStory() {
       {/* We make shoes the old way. */}
       <section className="section">
         <div className="kora-wrap story-split">
-          <PlaceholderTile label="Craftsmanship" ratio="4 / 3" />
+          {cimg('about.craft.image')
+            ? <img src={cimg('about.craft.image')} alt="Craftsmanship" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            : <PlaceholderTile label="Craftsmanship" ratio="4 / 3" />}
           <div className="story-split__copy">
-            <span className="eyebrow">Since generation one</span>
-            <h2 className="h2">We make shoes the old way.</h2>
+            <span className="eyebrow">{c('about.craft.eyebrow', 'Since generation one')}</span>
+            <h2 className="h2">{c('about.craft.heading', 'We make shoes the old way.')}</h2>
             <p className="story-split__p">
-              Three generations of last-makers, tanners and stitchers in South India taught us
-              that a good shoe can't be rushed. Every KORA pair still passes through the same
-              patient hands — cut, shaped, stitched and finished the way our founders learned it,
-              because craft like that doesn't go out of style.
+              {c('about.craft.body', "Three generations of last-makers, tanners and stitchers in South India taught us that a good shoe can't be rushed. Every KORA pair still passes through the same patient hands — cut, shaped, stitched and finished the way our founders learned it, because craft like that doesn't go out of style.")}
             </p>
           </div>
         </div>
@@ -52,17 +52,23 @@ export default function OurStory() {
         <div className="kora-wrap">
           <div className="sec-head">
             <div>
-              <span className="eyebrow">What goes in</span>
-              <h2 className="h2">The materials</h2>
+              <span className="eyebrow">{c('about.materials.eyebrow', 'What goes in')}</span>
+              <h2 className="h2">{c('about.materials.heading', 'The materials')}</h2>
             </div>
           </div>
           <div className="story-materials__grid">
-            {MATERIALS.map((m) => (
-              <div key={m.title} className="story-materials__item">
-                <PlaceholderTile label={m.title} ratio="4 / 3" />
-                <p className="story-materials__caption">{m.caption}</p>
-              </div>
-            ))}
+            {MATERIALS.map((m, i) => {
+              const title = c(`about.materials.item.${i}.title`, m.title);
+              const img = cimg(`about.materials.item.${i}.image`);
+              return (
+                <div key={m.title} className="story-materials__item">
+                  {img
+                    ? <img src={img} alt={title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    : <PlaceholderTile label={title} ratio="4 / 3" />}
+                  <p className="story-materials__caption">{c(`about.materials.item.${i}.caption`, m.caption)}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -72,8 +78,8 @@ export default function OurStory() {
         <div className="kora-wrap">
           <div className="sec-head">
             <div>
-              <span className="eyebrow">One house, eight worlds</span>
-              <h2 className="h2">Eight worlds, one family</h2>
+              <span className="eyebrow">{c('about.hub.eyebrow', 'One house, eight worlds')}</span>
+              <h2 className="h2">{c('about.hub.heading', 'Eight worlds, one family')}</h2>
             </div>
           </div>
           <div className="story-hub__grid">
@@ -93,12 +99,12 @@ export default function OurStory() {
       <section className="section section--warm story-india">
         <div className="kora-wrap">
           <span className="story-india__flag" aria-hidden="true">🇮🇳</span>
-          <h2 className="h2 story-india__h2">Proudly Indian</h2>
+          <h2 className="h2 story-india__h2">{c('about.india.heading', 'Proudly Indian')}</h2>
           <div className="story-india__stats">
-            {STATS.map((s) => (
+            {STATS.map((s, i) => (
               <div key={s.label} className="story-india__stat">
-                <span className="story-india__value">{s.value}</span>
-                <span className="story-india__label">{s.label}</span>
+                <span className="story-india__value">{c(`about.india.stat.${i}.value`, s.value)}</span>
+                <span className="story-india__label">{c(`about.india.stat.${i}.label`, s.label)}</span>
               </div>
             ))}
           </div>

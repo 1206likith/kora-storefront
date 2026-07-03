@@ -1,5 +1,6 @@
 import ProductCard from '../components/ProductCard';
 import { newArrivals } from '../data/catalog';
+import { c } from '../data/content';
 import { go } from '../router';
 
 export default function NewIn() {
@@ -10,10 +11,10 @@ export default function NewIn() {
       <div className="kora-wrap">
         <div className="sec-head">
           <div>
-            <div className="eyebrow">Just dropped</div>
-            <h2 className="h2">New in</h2>
+            <div className="eyebrow">{c('home.newIn.eyebrow', 'Just dropped')}</div>
+            <h2 className="h2">{c('home.newIn.heading', 'New in')}</h2>
           </div>
-          <a className="viewall" href="#/collection/new">View all →</a>
+          <a className="viewall" href="#/collection/new">{c('home.newIn.viewAllLabel', 'View all →')}</a>
         </div>
         <div className="rail">
           {products.map((p) => (

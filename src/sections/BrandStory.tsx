@@ -1,4 +1,5 @@
 import './BrandStory.css';
+import { c } from '../data/content';
 
 const CRAFT_POINTS = ['Hand stitched', 'Full-grain leather', 'Made in India', 'Built to last'];
 
@@ -11,9 +12,7 @@ export default function BrandStory() {
             Born in South India. <em>Built for everyone.</em>
           </p>
           <p className="brand-story__copy">
-            Every KORA pair starts with full-grain leather and a last-maker's eye — shaped by
-            three generations of craft in South India, and refined for how people actually move,
-            work and live today.
+            {c('home.brandStory.copy', "Every KORA pair starts with full-grain leather and a last-maker's eye — shaped by three generations of craft in South India, and refined for how people actually move, work and live today.")}
           </p>
           <div className="brand-story__points">
             {CRAFT_POINTS.map((point, i) => (
@@ -23,12 +22,12 @@ export default function BrandStory() {
                     ◆
                   </span>
                 )}
-                <span className="brand-story__point">{point}</span>
+                <span className="brand-story__point">{c(`home.brandStory.point.${i}`, point)}</span>
               </span>
             ))}
           </div>
           <a href="#/story" className="link-arrow">
-            Our story →
+            {c('home.brandStory.ctaLabel', 'Our story →')}
           </a>
         </div>
       </div>
