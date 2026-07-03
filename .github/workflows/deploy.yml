@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
+      - run: npm install --no-audit --no-fund
       - name: Build (pulls live catalogue + About from Wix, then bundles)
         run: npm run build
         env:
