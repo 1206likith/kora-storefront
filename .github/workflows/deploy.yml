@@ -3,24 +3,21 @@ name: Build & deploy KORA storefront
 on:
   push:
     branches: [main]
-  workflow_dispatch: {}          # manual "rebuild now" button
-  repository_dispatch:            # Wix Automation -> webhook -> rebuild on catalogue/About change
+  workflow_dispatch: {}
+  repository_dispatch:
     types: [wix-content-updated]
   schedule:
-    - cron: '0 2 * * *'          # daily safety-net rebuild (02:00 UTC)
+    - cron: '0 2 * * *'
 
-# Allow GITHUB_TOKEN to deploy to Pages
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
-  group: pages
+  group: deploy
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,20 +26,12 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm install --no-audit --no-fund
-      - name: Build (pulls live catalogue + About from Wix, then bundles)
+      - name: Build (pulls live catalogue + content from Wix, then bundles)
         run: npm run build
         env:
           WIX_CLIENT_ID: ${{ secrets.WIX_CLIENT_ID }}
-      - uses: actions/upload-pages-artifact@v3
+      - uses: peaceiris/actions-gh-pages@v4
         with:
-          path: dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          force_orphan: true
