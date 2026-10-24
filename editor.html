@@ -1,0 +1,660 @@
+<title>KORA — Content Editor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex,nofollow" />
+<style>
+  :root {
+    --navy: #14245c;
+    --navy-soft: #1d3178;
+    --orange: #e2570f;
+    --orange-soft: #ff6a1f;
+    --bg: #ffffff;
+    --panel: #f6f8fc;
+    --panel-2: #eef2fa;
+    --border: #d9e1f0;
+    --text: #1a2440;
+    --muted: #5c6784;
+    --ok: #1f9d55;
+    --err: #c0341d;
+    --shadow: 0 8px 28px rgba(20, 36, 92, 0.10);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text);
+    background: var(--panel-2);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Header */
+  header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 100%);
+    color: #fff;
+    padding: 18px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    box-shadow: 0 2px 14px rgba(20, 36, 92, 0.25);
+  }
+  .header-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand .logo {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: var(--orange);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 20px; color: #fff;
+    box-shadow: 0 4px 12px rgba(226, 87, 15, 0.4);
+  }
+  .brand h1 { font-size: 19px; margin: 0; font-weight: 700; letter-spacing: .3px; }
+  .brand p { margin: 0; font-size: 12.5px; opacity: .8; }
+  .header-actions { display: flex; align-items: center; gap: 10px; }
+  .header-btn {
+    background: rgba(255,255,255,0.12);
+    color: #fff; border: 1px solid rgba(255,255,255,0.25);
+    padding: 8px 12px; border-radius: 8px; font-size: 13px; cursor: pointer;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .header-btn:hover { background: rgba(255,255,255,0.22); }
+
+  /* Layout */
+  main { max-width: 860px; margin: 0 auto; padding: 20px 16px 140px; }
+
+  .intro {
+    background: var(--bg); border: 1px solid var(--border); border-radius: 14px;
+    padding: 16px 18px; margin-bottom: 18px; box-shadow: var(--shadow);
+  }
+  .intro h2 { margin: 0 0 4px; font-size: 16px; color: var(--navy); }
+  .intro p { margin: 0; color: var(--muted); font-size: 14px; }
+
+  /* Status/message banners */
+  .banner { border-radius: 12px; padding: 14px 16px; margin-bottom: 16px; font-size: 14px; }
+  .banner.loading { background: #eef2fa; color: var(--navy); border: 1px solid var(--border); }
+  .banner.error { background: #fdece8; color: var(--err); border: 1px solid #f4c4b8; }
+  .banner.empty { background: #fff8ec; color: #8a5a12; border: 1px solid #f2dcae; }
+  .spinner {
+    display: inline-block; width: 15px; height: 15px; margin-right: 8px;
+    border: 2px solid rgba(20,36,92,0.25); border-top-color: var(--navy);
+    border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: -2px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Group section (collapsible) */
+  .group {
+    background: var(--bg); border: 1px solid var(--border); border-radius: 14px;
+    margin-bottom: 14px; overflow: hidden; box-shadow: var(--shadow);
+  }
+  .group-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 15px 18px; cursor: pointer; user-select: none;
+    background: linear-gradient(180deg, #ffffff, #f9fbff);
+  }
+  .group-head:hover { background: var(--panel); }
+  .group-title { display: flex; align-items: center; gap: 11px; }
+  .group-title .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--orange); flex: 0 0 auto; }
+  .group-title h3 { margin: 0; font-size: 15.5px; color: var(--navy); font-weight: 700; }
+  .group-meta { display: flex; align-items: center; gap: 10px; }
+  .group-count { font-size: 12px; color: var(--muted); }
+  .chev { transition: transform .2s ease; color: var(--muted); font-size: 13px; }
+  .group.collapsed .chev { transform: rotate(-90deg); }
+  .group-body { padding: 4px 18px 16px; }
+  .group.collapsed .group-body { display: none; }
+  .grp-changed-badge {
+    background: var(--orange); color: #fff; font-size: 11px; font-weight: 700;
+    padding: 2px 8px; border-radius: 20px;
+  }
+
+  /* Field rows */
+  .field { padding: 14px 0; border-top: 1px solid var(--panel-2); }
+  .field:first-child { border-top: none; }
+  .field label { display: block; font-size: 13.5px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .field .key-hint { font-size: 11.5px; color: var(--muted); font-weight: 400; margin-left: 6px; }
+  .field textarea, .field input[type="text"] {
+    width: 100%; border: 1px solid var(--border); border-radius: 9px;
+    padding: 10px 12px; font-size: 14px; font-family: inherit; color: var(--text);
+    background: #fdfefe; resize: vertical; transition: border-color .15s, box-shadow .15s;
+  }
+  .field textarea:focus, .field input[type="text"]:focus {
+    outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(226,87,15,0.12);
+  }
+  .field.changed textarea, .field.changed input[type="text"] {
+    border-color: var(--orange); background: #fffaf6;
+  }
+  .field .changed-tag {
+    display: none; font-size: 11px; color: var(--orange); font-weight: 700; margin-left: 8px;
+  }
+  .field.changed .changed-tag { display: inline; }
+
+  /* Image field */
+  .img-row { display: flex; gap: 14px; align-items: flex-start; }
+  .img-thumb {
+    width: 92px; height: 92px; border-radius: 10px; object-fit: cover;
+    border: 1px solid var(--border); background: var(--panel-2); flex: 0 0 auto;
+  }
+  .img-thumb.placeholder {
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 11px; text-align: center; padding: 6px;
+  }
+  .img-note { font-size: 12.5px; color: var(--muted); background: var(--panel); border: 1px dashed var(--border); border-radius: 9px; padding: 10px 12px; }
+
+  /* Sticky publish bar */
+  .publishbar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 45;
+    background: rgba(255,255,255,0.96); backdrop-filter: blur(8px);
+    border-top: 1px solid var(--border);
+    padding: 12px 16px; box-shadow: 0 -6px 24px rgba(20,36,92,0.10);
+  }
+  .publishbar-inner {
+    max-width: 860px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  }
+  .changes-info { font-size: 13.5px; color: var(--muted); }
+  .changes-info strong { color: var(--orange); }
+  .btn {
+    border: none; border-radius: 10px; padding: 12px 22px; font-size: 15px; font-weight: 700;
+    cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: transform .05s, background .15s;
+  }
+  .btn:active { transform: translateY(1px); }
+  .btn-primary { background: var(--orange); color: #fff; box-shadow: 0 4px 14px rgba(226,87,15,0.35); }
+  .btn-primary:hover:not(:disabled) { background: var(--orange-soft); }
+  .btn-primary:disabled { background: #c9d2e3; color: #fff; cursor: not-allowed; box-shadow: none; }
+  .btn-ghost { background: var(--panel-2); color: var(--navy); }
+  .btn-ghost:hover { background: var(--border); }
+
+  /* Settings panel (modal-ish) */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(15,23,50,0.55); z-index: 60;
+    display: none; align-items: center; justify-content: center; padding: 16px;
+  }
+  .overlay.open { display: flex; }
+  .modal {
+    background: #fff; border-radius: 16px; max-width: 480px; width: 100%;
+    padding: 22px; box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+  }
+  .modal h3 { margin: 0 0 6px; color: var(--navy); font-size: 18px; }
+  .modal p { margin: 0 0 14px; font-size: 13.5px; color: var(--muted); }
+  .modal label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  .modal input[type="password"], .modal input[type="text"] {
+    width: 100%; border: 1px solid var(--border); border-radius: 9px; padding: 10px 12px;
+    font-size: 14px; font-family: inherit; margin-bottom: 12px;
+  }
+  .modal input:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(226,87,15,0.12); }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap; }
+  .modal .token-status { font-size: 12.5px; margin-bottom: 12px; }
+  .modal .token-status.set { color: var(--ok); }
+  .modal .token-status.unset { color: var(--err); }
+  .small-link { color: var(--navy); font-size: 12.5px; text-decoration: underline; cursor: pointer; background: none; border: none; padding: 0; }
+
+  /* Toast */
+  .toast {
+    position: fixed; bottom: 88px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--navy); color: #fff; padding: 13px 20px; border-radius: 12px;
+    font-size: 14px; font-weight: 600; z-index: 70; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; max-width: 90vw; text-align: center;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast.ok { background: var(--ok); }
+  .toast.err { background: var(--err); }
+
+  @media (max-width: 560px) {
+    .brand p { display: none; }
+    .btn { flex: 1 1 auto; justify-content: center; }
+    .changes-info { width: 100%; text-align: center; }
+  }
+</style>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="logo">K</div>
+      <div>
+        <h1>KORA — Content Editor</h1>
+        <p>Edit your website words. Publish when ready.</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <a class="header-btn" id="liveLink" href="https://1206likith.github.io/kora-storefront/" target="_blank" rel="noopener">View site ↗</a>
+      <button class="header-btn" id="settingsBtn" type="button">⚙ Settings</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="intro">
+    <h2>Welcome 👋</h2>
+    <p>This is where you change the words that appear on your Home and About pages. Edit any box below, then press the orange <strong>Publish changes</strong> button at the bottom. Your live site updates a couple of minutes later.</p>
+  </div>
+
+  <div id="status"></div>
+  <div id="groups"></div>
+</main>
+
+<div class="publishbar">
+  <div class="publishbar-inner">
+    <div class="changes-info" id="changesInfo">No changes yet.</div>
+    <div style="display:flex; gap:10px;">
+      <button class="btn btn-ghost" id="resetBtn" type="button">Undo all</button>
+      <button class="btn btn-primary" id="publishBtn" type="button" disabled>Publish changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- Settings modal -->
+<div class="overlay" id="settingsOverlay">
+  <div class="modal">
+    <h3>Publishing settings</h3>
+    <p>To publish your changes, this editor needs a GitHub access token. It is stored only in this browser and never uploaded anywhere except GitHub when you press Publish.</p>
+    <div class="token-status" id="tokenStatus"></div>
+    <label for="tokenInput">GitHub token</label>
+    <input type="password" id="tokenInput" placeholder="github_pat_..." autocomplete="off" spellcheck="false" />
+    <p style="margin-top:-4px;">Paste the fine-grained token that has "Contents" permission on the <strong>kora-storefront</strong> repository.</p>
+    <div class="modal-actions">
+      <button class="small-link" id="clearTokenBtn" type="button" style="margin-right:auto;">Clear token</button>
+      <button class="btn btn-ghost" id="cancelSettingsBtn" type="button">Cancel</button>
+      <button class="btn btn-primary" id="saveTokenBtn" type="button" style="padding:10px 18px; font-size:14px;">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- Config ----------
+  var WIX_CLIENT_ID = "0d84331d-ca62-4785-9541-7bc11f54fa39";
+  var TOKEN_URL = "https://www.wixapis.com/oauth2/token";
+  var QUERY_URL = "https://www.wixapis.com/wix-data/v2/items/query";
+  var COLLECTION = "SiteContent";
+  var GH_REPO = "1206likith/kora-storefront";
+  var GH_DISPATCH_URL = "https://api.github.com/repos/" + GH_REPO + "/dispatches";
+  var GH_TOKEN_KEY = "kora_gh_token";
+  var LIVE_SITE = "https://1206likith.github.io/kora-storefront/";
+
+  // Keys whose change objects must use "richText" instead of "text".
+  var RICHTEXT_KEYS = { "home.brandStory.statement": true, "about.hero.statement": true };
+
+  // ---------- State ----------
+  var items = [];           // normalized: { id, key, note, order, group, image, isImage, original, current }
+  var byKey = {};           // key -> item
+
+  // ---------- DOM ----------
+  var statusEl = document.getElementById("status");
+  var groupsEl = document.getElementById("groups");
+  var changesInfo = document.getElementById("changesInfo");
+  var publishBtn = document.getElementById("publishBtn");
+  var resetBtn = document.getElementById("resetBtn");
+  var toastEl = document.getElementById("toast");
+
+  // ---------- Helpers ----------
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+
+  function showToast(msg, kind) {
+    toastEl.textContent = msg;
+    toastEl.className = "toast show" + (kind ? " " + kind : "");
+    setTimeout(function () { toastEl.className = "toast" + (kind ? " " + kind : ""); }, 4200);
+  }
+
+  function setStatus(html) { statusEl.innerHTML = html; }
+
+  // Pretty label for a group id, e.g. "home.hero" -> "Home · Hero"
+  function groupLabel(g) {
+    if (!g) return "Other";
+    var parts = String(g).split(".");
+    var pretty = parts.map(function (p) {
+      // camelCase / kebab to spaced words
+      var spaced = p.replace(/[-_]/g, " ").replace(/([a-z])([A-Z])/g, "$1 $2");
+      return spaced.replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+    });
+    return pretty.join(" · ");
+  }
+
+  // Parse a wix:image URI into a static media URL for a thumbnail.
+  // Accepts forms like:
+  //   wix:image://v1/<mediaId>/<filename>#originWidth=...
+  //   https://static.wixstatic.com/media/<mediaId>
+  //   <mediaId>
+  function resolveImageThumb(imageVal) {
+    if (!imageVal) return null;
+    var s = String(imageVal);
+    var id = null;
+    if (s.indexOf("wix:image://") === 0) {
+      var rest = s.slice("wix:image://".length); // v1/<id>/<file>#...
+      var noHash = rest.split("#")[0];
+      var segs = noHash.split("/").filter(Boolean); // ["v1","<id>","<file>"]
+      if (segs.length >= 2) id = segs[1];
+      else if (segs.length === 1) id = segs[0];
+    } else if (s.indexOf("static.wixstatic.com/media/") !== -1) {
+      id = s.split("static.wixstatic.com/media/")[1].split(/[\/?#]/)[0];
+      return "https://static.wixstatic.com/media/" + id;
+    } else if (/^[\w.\-~]+\.(jpg|jpeg|png|webp|gif|avif)$/i.test(s) || /^[0-9a-f]{6,}_/.test(s)) {
+      id = s;
+    }
+    if (!id) return null;
+    return "https://static.wixstatic.com/media/" + id;
+  }
+
+  function isImageKey(key) {
+    return /\.(image|icon)$/i.test(String(key || ""));
+  }
+
+  // ---------- Load: token + query ----------
+  function getAnonToken() {
+    return fetch(TOKEN_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ clientId: WIX_CLIENT_ID, grantType: "anonymous" })
+    }).then(function (r) {
+      if (!r.ok) return r.text().then(function (t) { throw new Error("Token request failed (" + r.status + "): " + t); });
+      return r.json();
+    }).then(function (j) {
+      if (!j.access_token) throw new Error("No access_token in token response.");
+      return j.access_token;
+    });
+  }
+
+  function queryAllItems(token) {
+    var collected = [];
+    function page(cursor) {
+      var query = { cursorPaging: { limit: 100 } };
+      if (cursor) query.cursorPaging.cursor = cursor;
+      var body = { dataCollectionId: COLLECTION, query: query };
+      return fetch(QUERY_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": token },
+        body: JSON.stringify(body)
+      }).then(function (r) {
+        if (!r.ok) return r.text().then(function (t) { throw new Error("Query failed (" + r.status + "): " + t); });
+        return r.json();
+      }).then(function (j) {
+        var rows = j.dataItems || j.items || [];
+        collected = collected.concat(rows);
+        var pm = j.pagingMetadata || {};
+        var cursors = pm.cursors || {};
+        if (pm.hasNext && cursors.next) return page(cursors.next);
+        return collected;
+      });
+    }
+    return page(null);
+  }
+
+  function normalize(rawRows) {
+    var out = [];
+    rawRows.forEach(function (row) {
+      var id = row._id || row.id;
+      var data = row.data || {};
+      var key = data.key;
+      if (!key) return; // skip rows without a key
+      var imgKey = isImageKey(key);
+      var textVal = (data.richText != null && data.richText !== "") ? data.richText : (data.text || "");
+      out.push({
+        id: id,
+        key: key,
+        note: data.note || "",
+        order: (typeof data.order === "number") ? data.order : (parseFloat(data.order) || 0),
+        group: data.group || "other",
+        image: data.image || "",
+        isImage: imgKey,
+        original: imgKey ? "" : String(textVal),
+        current: imgKey ? "" : String(textVal)
+      });
+    });
+    return out;
+  }
+
+  // ---------- Render ----------
+  function render() {
+    // Group items by group id
+    var groupsMap = {};
+    var groupOrder = [];
+    items.forEach(function (it) {
+      if (!groupsMap[it.group]) { groupsMap[it.group] = []; groupOrder.push(it.group); }
+      groupsMap[it.group].push(it);
+    });
+    // Sort groups alphabetically by their pretty label for a stable friendly order
+    groupOrder.sort(function (a, b) { return groupLabel(a).localeCompare(groupLabel(b)); });
+
+    var html = "";
+    groupOrder.forEach(function (g) {
+      var rows = groupsMap[g].slice().sort(function (a, b) { return a.order - b.order; });
+      html += '<section class="group" data-group="' + esc(g) + '">';
+      html += '<div class="group-head" data-toggle="' + esc(g) + '">';
+      html += '<div class="group-title"><span class="dot"></span><h3>' + esc(groupLabel(g)) + '</h3></div>';
+      html += '<div class="group-meta"><span class="grp-changed-badge" data-grpbadge="' + esc(g) + '" style="display:none"></span>';
+      html += '<span class="group-count">' + rows.length + ' item' + (rows.length === 1 ? '' : 's') + '</span>';
+      html += '<span class="chev">▾</span></div></div>';
+      html += '<div class="group-body">';
+      rows.forEach(function (it) { html += renderField(it); });
+      html += '</div></section>';
+    });
+    groupsEl.innerHTML = html;
+
+    // Wire collapse toggles
+    Array.prototype.forEach.call(groupsEl.querySelectorAll("[data-toggle]"), function (head) {
+      head.addEventListener("click", function () {
+        head.parentNode.classList.toggle("collapsed");
+      });
+    });
+
+    // Wire inputs
+    Array.prototype.forEach.call(groupsEl.querySelectorAll("[data-key]"), function (el) {
+      el.addEventListener("input", function () {
+        var key = el.getAttribute("data-key");
+        var it = byKey[key];
+        if (!it) return;
+        it.current = el.value;
+        var field = el.closest(".field");
+        if (field) field.classList.toggle("changed", it.current !== it.original);
+        updateChangeUI();
+      });
+    });
+  }
+
+  function renderField(it) {
+    var labelText = it.note || it.key;
+    var html = '<div class="field" data-field-key="' + esc(it.key) + '">';
+    html += '<label>' + esc(labelText) +
+            '<span class="key-hint">' + esc(it.key) + '</span>' +
+            '<span class="changed-tag">• edited</span></label>';
+
+    if (it.isImage) {
+      var thumb = resolveImageThumb(it.image);
+      html += '<div class="img-row">';
+      if (thumb) {
+        html += '<img class="img-thumb" src="' + esc(thumb) + '" alt="current image" ' +
+                'onerror="this.classList.add(\'placeholder\');this.removeAttribute(\'src\');this.textContent=\'No preview\';" />';
+      } else {
+        html += '<div class="img-thumb placeholder">No image set</div>';
+      }
+      html += '<div class="img-note">To change this photo, upload it in the Wix dashboard ' +
+              '(CMS → Site Content → this row&#39;s Image field).</div>';
+      html += '</div>';
+    } else {
+      var val = it.current;
+      var isLong = val.length > 70 || val.indexOf("\n") !== -1;
+      if (isLong) {
+        var rows = Math.min(10, Math.max(3, Math.ceil(val.length / 60)));
+        html += '<textarea data-key="' + esc(it.key) + '" rows="' + rows + '">' + esc(val) + '</textarea>';
+      } else {
+        html += '<input type="text" data-key="' + esc(it.key) + '" value="' + esc(val) + '" />';
+      }
+    }
+    html += '</div>';
+    return html;
+  }
+
+  // ---------- Change tracking ----------
+  function changedItems() {
+    return items.filter(function (it) { return !it.isImage && it.current !== it.original; });
+  }
+
+  function updateChangeUI() {
+    var changed = changedItems();
+    var n = changed.length;
+    if (n === 0) {
+      changesInfo.textContent = "No changes yet.";
+      publishBtn.disabled = true;
+      publishBtn.textContent = "Publish changes";
+    } else {
+      changesInfo.innerHTML = "<strong>" + n + "</strong> unsaved change" + (n === 1 ? "" : "s") + ".";
+      publishBtn.disabled = false;
+      publishBtn.textContent = "Publish changes (" + n + ")";
+    }
+    // Per-group changed badges
+    var counts = {};
+    changed.forEach(function (it) { counts[it.group] = (counts[it.group] || 0) + 1; });
+    Array.prototype.forEach.call(groupsEl.querySelectorAll("[data-grpbadge]"), function (b) {
+      var g = b.getAttribute("data-grpbadge");
+      if (counts[g]) { b.style.display = ""; b.textContent = counts[g] + " edited"; }
+      else { b.style.display = "none"; }
+    });
+  }
+
+  function resetChanges() {
+    items.forEach(function (it) { it.current = it.original; });
+    // Re-render field values
+    Array.prototype.forEach.call(groupsEl.querySelectorAll("[data-key]"), function (el) {
+      var it = byKey[el.getAttribute("data-key")];
+      if (it) el.value = it.original;
+      var field = el.closest(".field");
+      if (field) field.classList.remove("changed");
+    });
+    updateChangeUI();
+  }
+
+  // Mark current values as the new baseline (after a successful publish)
+  function commitBaseline() {
+    items.forEach(function (it) { it.original = it.current; });
+    Array.prototype.forEach.call(groupsEl.querySelectorAll(".field"), function (f) { f.classList.remove("changed"); });
+    updateChangeUI();
+  }
+
+  // ---------- Publish ----------
+  function buildPayload() {
+    return changedItems().map(function (it) {
+      var change = { key: it.key };
+      if (RICHTEXT_KEYS[it.key]) change.richText = it.current;
+      else change.text = it.current;
+      return change;
+    });
+  }
+
+  function publish() {
+    var token = localStorage.getItem(GH_TOKEN_KEY);
+    if (!token) { openSettings(); showToast("Add your GitHub token to publish.", "err"); return; }
+
+    var changes = buildPayload();
+    if (changes.length === 0) { showToast("Nothing to publish.", null); return; }
+
+    publishBtn.disabled = true;
+    publishBtn.textContent = "Publishing…";
+
+    fetch(GH_DISPATCH_URL, {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + token,
+        "Accept": "application/vnd.github+json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ event_type: "content-save", client_payload: { changes: changes } })
+    }).then(function (r) {
+      if (r.status === 204) {
+        commitBaseline();
+        showToast("Saved! Your site will update in ~2 minutes.", "ok");
+      } else {
+        return r.text().then(function (t) {
+          var msg = t;
+          try { var j = JSON.parse(t); if (j && j.message) msg = j.message; } catch (e) {}
+          showToast("Publish failed (" + r.status + "): " + msg, "err");
+          updateChangeUI();
+        });
+      }
+    }).catch(function (err) {
+      showToast("Network error while publishing: " + err.message, "err");
+      updateChangeUI();
+    });
+  }
+
+  // ---------- Settings modal ----------
+  var overlay = document.getElementById("settingsOverlay");
+  var tokenInput = document.getElementById("tokenInput");
+  var tokenStatus = document.getElementById("tokenStatus");
+
+  function refreshTokenStatus() {
+    var t = localStorage.getItem(GH_TOKEN_KEY);
+    if (t) {
+      tokenStatus.className = "token-status set";
+      tokenStatus.textContent = "✓ A token is saved in this browser.";
+    } else {
+      tokenStatus.className = "token-status unset";
+      tokenStatus.textContent = "✗ No token saved yet — you cannot publish until you add one.";
+    }
+  }
+  function openSettings() {
+    refreshTokenStatus();
+    tokenInput.value = "";
+    overlay.classList.add("open");
+  }
+  function closeSettings() { overlay.classList.remove("open"); }
+
+  document.getElementById("settingsBtn").addEventListener("click", openSettings);
+  document.getElementById("cancelSettingsBtn").addEventListener("click", closeSettings);
+  overlay.addEventListener("click", function (e) { if (e.target === overlay) closeSettings(); });
+  document.getElementById("saveTokenBtn").addEventListener("click", function () {
+    var v = tokenInput.value.trim();
+    if (!v) { showToast("Paste a token first.", "err"); return; }
+    localStorage.setItem(GH_TOKEN_KEY, v);
+    refreshTokenStatus();
+    showToast("Token saved.", "ok");
+    closeSettings();
+  });
+  document.getElementById("clearTokenBtn").addEventListener("click", function () {
+    localStorage.removeItem(GH_TOKEN_KEY);
+    refreshTokenStatus();
+    showToast("Token cleared.", null);
+  });
+
+  document.getElementById("liveLink").setAttribute("href", LIVE_SITE);
+  publishBtn.addEventListener("click", publish);
+  resetBtn.addEventListener("click", resetChanges);
+
+  // ---------- Boot ----------
+  function boot() {
+    setStatus('<div class="banner loading"><span class="spinner"></span>Loading your website content…</div>');
+    getAnonToken()
+      .then(function (token) { return queryAllItems(token); })
+      .then(function (rows) {
+        items = normalize(rows);
+        byKey = {};
+        items.forEach(function (it) { byKey[it.key] = it; });
+        if (items.length === 0) {
+          setStatus('<div class="banner empty">No content found in the Site Content collection yet. Once content exists in Wix, it will appear here to edit.</div>');
+          return;
+        }
+        setStatus("");
+        render();
+        updateChangeUI();
+      })
+      .catch(function (err) {
+        setStatus('<div class="banner error"><strong>Could not load content.</strong><br>' +
+          esc(err.message) +
+          '<br><br>Please check your internet connection and refresh the page. If this keeps happening, contact your developer.</div>');
+      });
+  }
+
+  boot();
+})();
+</script>
